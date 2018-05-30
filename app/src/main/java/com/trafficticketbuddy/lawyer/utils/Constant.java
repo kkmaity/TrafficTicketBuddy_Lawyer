@@ -10,7 +10,8 @@ import java.util.Locale;
  */
 
 public class Constant {
-    public static  String BASE_URL=getBaseURL();
+    public static  String BASE_URL="http://13.58.150.208/buddy/";
+   // public static  String BASE_URL=getBaseURL();
     public static  String API_KEY="0a2b8d7f9243305f2a4700e1870f673a";
     public static String USER_TYPE="LAWYER";
     public static String USER_COUNTRY="Canada";
@@ -23,11 +24,11 @@ public class Constant {
 
     private static String getBaseURL() {
         if (environment == ENVIRONMENT.PRODUCTION) {
-            return "https://api.github.com/";
+            return "http://13.58.150.208/buddy/";
         } else if (environment == ENVIRONMENT.STAGING) {
-            return "https://api.github.com/";
+            return "http://13.58.150.208/buddy/";
         } else if (environment == ENVIRONMENT.DEVELOPMENT) {
-            return "http://173.214.180.212/";
+            return "http://13.58.150.208/buddy/";
         }
         return null;
 

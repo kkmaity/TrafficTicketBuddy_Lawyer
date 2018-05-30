@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:background="@color/alice_blue"
     android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,6 +22,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <LinearLayout
                     android:id="@+id/lmain"
                     android:layout_width="match_parent"
@@ -28,8 +30,8 @@
                     android:gravity="center"
                     android:background="@drawable/gradient_primary">
                     <RelativeLayout
-                        android:layout_width="@dimen/_65sdp"
-                        android:layout_height="@dimen/_65sdp"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
                         android:layout_marginBottom="@dimen/_16sdp">
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/ivProfileImage"
@@ -68,6 +70,8 @@
                             android:layout_marginRight="@dimen/_16sdp"
                             android:layout_marginBottom="@dimen/_8sdp"
                             android:orientation="vertical">
+
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -149,6 +153,7 @@
                                 android:layout_height="0.5dp"
                                 android:background="@color/grey"></View>
                             <LinearLayout
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
@@ -189,6 +194,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
                                 android:background="@color/grey"></View>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -227,51 +233,58 @@
                                         />
                                 </LinearLayout>
                             </LinearLayout>
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
                                 android:background="@color/grey"></View>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
-
                                 android:orientation="vertical">
+
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Gender"
                                     android:fontFamily="@font/lato_regular"
-                                    android:textSize="@dimen/_11sdp"/>
+                                    android:text="Country"
+                                    android:textSize="@dimen/_11sdp" />
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
                                     android:layout_gravity="center"
                                     android:gravity="center"
-                                    >
+                                    android:orientation="horizontal">
+
                                     <EditText
-                                        android:id="@+id/et_gender"
+                                        android:id="@+id/et_country"
                                         android:layout_width="0dp"
-                                        android:layout_weight="1"
                                         android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_11sdp"
-                                        android:fontFamily="@font/lato_regular"
+                                        android:layout_weight="1"
                                         android:background="@null"
-                                        android:textColor="@color/txt_grey"
-                                        android:drawableRight="@drawable/ic_expand_more_black_24dp"
-                                        android:textColorHint="@color/hint_grey"
+                                        android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                                        android:fontFamily="@font/lato_regular"
                                         android:inputType="textEmailAddress"
-                                        android:maxLines="1"
                                         android:maxLength="150"
+                                        android:maxLines="1"
                                         android:focusable="false"
-                                        android:focusableInTouchMode="false"
-                                        android:paddingRight="@dimen/_5sdp"
                                         android:paddingBottom="@dimen/_6sdp"
+                                        android:paddingRight="@dimen/_5sdp"
                                         android:paddingTop="@dimen/_6sdp"
-                                        />
+                                        android:textColor="@color/txt_grey"
+                                        android:textColorHint="@color/hint_grey"
+                                        android:textSize="@dimen/_11sdp" />
                                 </LinearLayout>
                             </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/grey"></View>
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
@@ -308,6 +321,7 @@
                                         android:inputType="textEmailAddress"
                                         android:maxLines="1"
                                         android:maxLength="150"
+                                        android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
                                         android:focusable="false"
                                         android:focusableInTouchMode="false"
                                         android:paddingRight="@dimen/_5sdp"
@@ -352,6 +366,7 @@
                                         android:inputType="textEmailAddress"
                                         android:maxLines="1"
                                         android:focusable="false"
+                                        android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
                                         android:focusableInTouchMode="false"
                                         android:maxLength="150"
                                         android:paddingRight="@dimen/_5sdp"
@@ -364,55 +379,37 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
                                 android:background="@color/grey"></View>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
-                                android:orientation="vertical">
+                                android:orientation="horizontal">
+
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="Country"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:textSize="@dimen/_11sdp"/>
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
+                                    android:layout_weight="3"
                                     android:layout_gravity="center"
-                                    android:gravity="center"
-                                    >
-                                    <EditText
-                                        android:id="@+id/et_country"
-                                        android:layout_width="0dp"
-                                        android:layout_weight="1"
-                                        android:layout_height="wrap_content"
-                                        android:textSize="@dimen/_11sdp"
-                                        android:fontFamily="@font/lato_regular"
-                                        android:background="@null"
-                                        android:textColor="@color/txt_grey"
-                                        android:textColorHint="@color/hint_grey"
-                                        android:inputType="textEmailAddress"
-                                        android:maxLines="1"
-                                        android:maxLength="150"
-                                        android:paddingRight="@dimen/_5sdp"
-                                        android:paddingBottom="@dimen/_6sdp"
-                                        android:paddingTop="@dimen/_6sdp"
-                                        />
-                                </LinearLayout>
+                                    android:fontFamily="@font/lato_regular"
+                                    android:text="Upload drivingLicense:"/>
+
+                                <ImageView
+                                    android:id="@+id/ivLicense"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/_51sdp"
+                                    android:layout_weight="2"
+                                    android:src="@drawable/upload_file"/>
                             </LinearLayout>
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/grey"></View>
+
 
                             <android.support.v7.widget.CardView
-                                android:id="@+id/cardSignUp"
+                                android:id="@+id/cardUpdate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:cardBackgroundColor="@color/colorPrimary"
                                 app:cardCornerRadius="@dimen/_3sdp"
-                                android:layout_marginTop="@dimen/_1sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
                                 android:elevation="@dimen/_2sdp">
                                 <TextView
                                     android:layout_width="match_parent"
@@ -420,6 +417,7 @@
                                     android:textColor="@color/white"
                                     android:text="Update"
                                     android:gravity="center"
+
 
                                     android:fontFamily="@font/lato_regular"
                                     android:layout_gravity="center"

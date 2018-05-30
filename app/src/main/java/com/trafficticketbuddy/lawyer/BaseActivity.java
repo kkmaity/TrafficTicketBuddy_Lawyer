@@ -1,5 +1,6 @@
 package com.trafficticketbuddy.lawyer;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,9 +21,11 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -40,7 +43,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.trafficticketbuddy.lawyer.interfaces.FbLoginCompleted;
 import com.trafficticketbuddy.lawyer.interfaces.GoogleLoginCompleted;
+import com.trafficticketbuddy.lawyer.model.cases.Response;
 import com.trafficticketbuddy.lawyer.preferences.Preference;
+import com.trafficticketbuddy.lawyer.utils.Constant;
 
 import org.json.JSONObject;
 
@@ -50,6 +55,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -66,6 +72,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     private CallbackManager callbackManager;
     private FbLoginCompleted mFbLoginCompleted;
     private GoogleLoginCompleted mGoogleLoginCompleted;
+    public  static final List<Response> caseListData=new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -422,6 +429,19 @@ public void showDialog(String msg){
         this.mFbLoginCompleted=mFbLoginCompleted;
         LoginManager.getInstance().logOut();
         fbLoginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_birthday"));
+    }
+
+    public  void hideSoftKeyboard() {
+
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+
+    public void loadImage(Context mContext,String url, ImageView mImageView){
+        Glide.with(mContext).load(Constant.BASE_URL+url)
+                .thumbnail(0.5f)
+                .into(mImageView);
     }
 
 }

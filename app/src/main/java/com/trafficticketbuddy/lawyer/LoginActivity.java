@@ -1,20 +1,17 @@
 package com.trafficticketbuddy.lawyer;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.GraphResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 import com.trafficticketbuddy.lawyer.apis.ApiFaceBookLogin;
 import com.trafficticketbuddy.lawyer.apis.ApiGoogleLogin;
 import com.trafficticketbuddy.lawyer.apis.ApiLogin;
@@ -26,8 +23,6 @@ import com.trafficticketbuddy.lawyer.utils.Constant;
 
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +36,15 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+
+            preference.setDeviceToken(refreshedToken);
+
+        String refreshedToken1 = FirebaseInstanceId.getInstance().getToken();
+
+            preference.setDeviceToken(refreshedToken1);
+
+
         cardLogin=(CardView)findViewById(R.id.cardSignUp);
         cvGoogleLogin=(CardView)findViewById(R.id.cvGoogleLogin);
         cvFbLogin=(CardView)findViewById(R.id.cvFbLogin);
@@ -51,6 +55,8 @@ public class LoginActivity extends BaseActivity {
         cvGoogleLogin.setOnClickListener(this);
         cvFbLogin.setOnClickListener(this);
         cardLogin.setOnClickListener(this);
+    String deviceToken=    preference.getDeviceToken();
+    System.out.println("!!!!!!!!!!!"+deviceToken);
 
         findViewById(R.id.txtRegister).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +65,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        PrintHashKey();
     }
 
     @Override
@@ -79,7 +84,7 @@ public class LoginActivity extends BaseActivity {
                         String id = account.getId();
                         String pic_url="";
                         if(account.getPhotoUrl()!=null) {
-                             pic_url = account.getPhotoUrl().getPath();
+                            pic_url = account.getPhotoUrl().getPath();
                         }
                         if(!email.isEmpty()) {
                             doGoogleLoginApi(first_name, last_name, email, "", "", pic_url, id, "", "", "");
@@ -123,15 +128,23 @@ public class LoginActivity extends BaseActivity {
             public <E> void onSuccess(E t) {
                 {
                     dismissProgressDialog();
-                    LoginMain mLoginMain = (LoginMain)t;
+                    LoginMain mLoginMain = (LoginMain) t;
                     if(mLoginMain.getStatus()){
-
-                    }else{
-                        if(mLoginMain.getMessage().equalsIgnoreCase("phone not verified")){
-                            startActivity(new Intent(LoginActivity.this,OTPActivity.class));
-                        }else{
-
+                        preference.setUserId(mLoginMain.getResponse().getId());
+                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                        if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                                || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
+                            startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
                         }
+                        else if(mLoginMain.getResponse().getIsPhoneVerified().equalsIgnoreCase("0")){
+                            startActivity(new Intent(LoginActivity.this,OTPActivity.class));
+                        }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                            startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
+                        }else{
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        }
+                    }else{
+                        showDialog(mLoginMain.getMessage());
                     }
 
                 }
@@ -160,14 +173,21 @@ public class LoginActivity extends BaseActivity {
                 dismissProgressDialog();
                 {LoginMain mLoginMain = (LoginMain)t;
                     if(mLoginMain.getStatus()){
-                        if(mLoginMain.getMessage().equalsIgnoreCase("phone number not verified")){
-                            preference.setIsFromSocial(true);
+                        preference.setUserId(mLoginMain.getResponse().getId());
+                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                        if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                                || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
                             startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
+                        }
+                        else if(mLoginMain.getResponse().getIsPhoneVerified().equalsIgnoreCase("0")){
+                            startActivity(new Intent(LoginActivity.this,OTPActivity.class));
+                        }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                            startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
                         }else{
-
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         }
                     }else{
-
+                        showDialog(mLoginMain.getMessage());
                     }
                 }
             }
@@ -186,25 +206,32 @@ public class LoginActivity extends BaseActivity {
 
 
     private void doGoogleLoginApi(String first_name,String last_name,String email,String phone,
-                                  String gender,String image,String facebook_id,String state,
+                                  String gender,String image,String google_id,String state,
                                   String country,String city) {
         showProgressDialog();
-        new ApiGoogleLogin(getFBParam(first_name,last_name,email,phone,
-                gender,image,facebook_id,state,country,city), new OnApiResponseListener() {
+        new ApiGoogleLogin(getGoogleParam(first_name,last_name,email,phone,
+                gender,image,google_id,state,country,city), new OnApiResponseListener() {
             @Override
             public <E> void onSuccess(E t) {
                 {
                     dismissProgressDialog();
                     LoginMain mLoginMain = (LoginMain)t;
                     if(mLoginMain.getStatus()){
-                        if(mLoginMain.getMessage().equalsIgnoreCase("phone number not verified")){
-                            preference.setIsFromSocial(true);
+                        preference.setUserId(mLoginMain.getResponse().getId());
+                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                        if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                                || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
                             startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
+                        }
+                        else if(mLoginMain.getResponse().getIsPhoneVerified().equalsIgnoreCase("0")){
+                            startActivity(new Intent(LoginActivity.this,OTPActivity.class));
+                        }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                            startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
                         }else{
-
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         }
                     }else{
-
+                        showDialog(mLoginMain.getMessage());
                     }
                 }
             }
@@ -237,6 +264,8 @@ public class LoginActivity extends BaseActivity {
         map.put("email",etEmail.getText().toString());
         map.put("password",etPassword.getText().toString());
         map.put("user_type",Constant.USER_TYPE);
+        map.put("device_type", "ANDROID");
+        map.put("token", preference.getDeviceToken());
         return map;
     }
 
@@ -255,27 +284,29 @@ public class LoginActivity extends BaseActivity {
         map.put("country",country);
         map.put("city",city);
         map.put("user_type",Constant.USER_TYPE);
+        map.put("device_type", "ANDROID");
+        map.put("token", preference.getDeviceToken());
         return map;
     }
 
 
-    private void PrintHashKey() {
-
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.trafficticketbuddy.lawyer",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
+    private Map<String,String> getGoogleParam(String first_name,String last_name,String email,String phone,
+                                          String gender,String image,String google_id,String state,
+                                          String country,String city){
+        Map<String,String> map=new HashMap<>();
+        map.put("first_name",first_name);
+        map.put("last_name",last_name);
+        map.put("email",email);
+        map.put("phone",phone);
+        map.put("gender",gender);
+        map.put("image",image);
+        map.put("google_id",google_id);
+        map.put("state",state);
+        map.put("country",country);
+        map.put("city",city);
+        map.put("user_type",Constant.USER_TYPE);
+        map.put("device_type", "ANDROID");
+        map.put("token", preference.getDeviceToken());
+        return map;
     }
-
 }

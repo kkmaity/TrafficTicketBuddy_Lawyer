@@ -15,15 +15,16 @@ public class ApiState {
     private OnApiResponseListener listener;
     private Map<String, String> param;
 
-    public ApiState(OnApiResponseListener listener) {
+    public ApiState(Map<String, String> param,OnApiResponseListener listener) {
         this.listener = listener;
+        this.param=param;
         doWebServiceCall();
 
     }
 
     public void doWebServiceCall() {
 
-        Call<StateNameMain> getDepartment = RestService.getInstance().restInterface.getStateName();
+        Call<StateNameMain> getDepartment = RestService.getInstance().restInterface.getStateName(param);
         APIHelper.enqueueWithRetry(getDepartment, new Callback<StateNameMain>() {
             @Override
             public void onResponse(Call<StateNameMain> call, Response<StateNameMain> response) {

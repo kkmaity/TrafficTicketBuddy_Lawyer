@@ -9,8 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.trafficticketbuddy.lawyer.apis.ApiResendOTP;
 import com.trafficticketbuddy.lawyer.apis.ApiValidateOTP;
+import com.trafficticketbuddy.lawyer.model.login.Response;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 
 import org.json.JSONException;
@@ -25,6 +27,8 @@ public class OTPActivity extends BaseActivity {
     private TextView tvTimer;
     private ImageView ivReSend;
     private CardView cardSubmit;
+    private TextView tv_otp_txt;
+    private Response mLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +36,31 @@ public class OTPActivity extends BaseActivity {
         setContentView(R.layout.activity_otp_validation);
         etOTP=(EditText)findViewById(R.id.etOTP);
         tvTimer=(TextView)findViewById(R.id.tvTimer);
+        tv_otp_txt=(TextView)findViewById(R.id.tv_otp_txt);
         ivReSend=(ImageView)findViewById(R.id.ivReSend);
         cardSubmit=(CardView)findViewById(R.id.cardSubmit);
         cardSubmit.setOnClickListener(this);
         ivReSend.setOnClickListener(this);
 
-        recendOTP();
+        Gson gson = new Gson();
+        String json = preference.getString("login_user", "");
+        mLogin = gson.fromJson(json, Response.class);
+
+
+       // tv_otp_txt.setOnClickListener(this);
+        tv_otp_txt.setText("A 4-digit OTP has been sent to "+mLogin.getPhone()+". Plesae enter the OTP below to verify your phone mumber.");
+
+
+       // recendOTP();
         startTimer();
     }
 public void startTimer(){
     ivReSend.setVisibility(View.GONE);
     tvTimer.setVisibility(View.VISIBLE);
-    new CountDownTimer(50000, 1000) {
+    new CountDownTimer(90000, 1000) {
 
         public void onTick(long millisUntilFinished) {
-            tvTimer.setText("" + millisUntilFinished / 1000);
+            tvTimer.setText("Timer "+String.format("%02d", millisUntilFinished / 1000)+" s");
         }
 
         public void onFinish() {
@@ -62,7 +76,7 @@ public void startTimer(){
         super.onClick(view);
         switch (view.getId()){
             case R.id.cardSubmit:
-                if (etOTP.getText().toString().isEmpty())
+                if (!etOTP.getText().toString().isEmpty())
                     validateOTP();
                 else
                     showDialog("Please Enter OTP");
@@ -72,6 +86,7 @@ public void startTimer(){
                 recendOTP();
                 startTimer();
                 break;
+
         }
     }
 
@@ -86,7 +101,13 @@ public void startTimer(){
                     try {
                         JSONObject object=new JSONObject(res);
                         if (object.getBoolean("status")){
-                            startActivity(new Intent(OTPActivity.this,MainActivity.class));
+                            mLogin.setIsPhoneVerified("1");
+                            preference.setLoggedInUser(new Gson().toJson(mLogin));
+                            if(mLogin.getIsEmailVerified().equalsIgnoreCase("0")) {
+                                startActivity(new Intent(OTPActivity.this, EmailOTPActivity.class));
+                            }else{
+                                startActivity(new Intent(OTPActivity.this, MainActivity.class));
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -114,7 +135,7 @@ public void startTimer(){
 
     private Map<String, String> getParamValidate() {
         Map<String,String> map=new HashMap<>();
-        map.put("user_id",preference.getUserId());
+        map.put("user_id",mLogin.getId());
         map.put("otp",etOTP.getText().toString());
 
         return map;
@@ -130,10 +151,7 @@ public void startTimer(){
                     String res=(String)t;
                     try {
                         JSONObject object=new JSONObject(res);
-                        if (object.getBoolean("status")){
-                           // startActivity(new Intent(OTPActivity.this,MainActivity.class));
-
-                        }
+                        if (object.getBoolean("status")){ }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -158,8 +176,8 @@ public void startTimer(){
     }
     private Map<String, String> getParamResendOTP() {
         Map<String,String> map=new HashMap<>();
-        map.put("user_id",preference.getUserId());
-        map.put("phone",preference.getPhone());
+        map.put("user_id",mLogin.getId());
+        map.put("phone",mLogin.getPhone());
 
         return map;
     }

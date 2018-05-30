@@ -12,10 +12,11 @@
     <string name="fb_login_protocol_scheme">fb1654686654627980</string>
 
 
+
     <string-array name="gender">
         <item>Male</item>
         <item>Female</item>
         <item>Others</item>
     </string-array>
-
+    <string name="title_activity_maps">Map</string>
 </resources>
