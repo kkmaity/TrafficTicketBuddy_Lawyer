@@ -275,7 +275,7 @@ public class RegistrationActivity extends BaseActivity {
                             Gson gson = new Gson();
                             com.trafficticketbuddy.lawyer.model.login.Response mResponse = gson.fromJson(object.getJSONObject("response").toString(), com.trafficticketbuddy.lawyer.model.login.Response.class);
                             preference.setLoggedInUser(new Gson().toJson(mResponse));
-                            startActivity(new Intent(RegistrationActivity.this,OTPActivity.class));
+                            startActivity(new Intent(RegistrationActivity.this,EmailOTPActivity.class));
                         }
                         else
                             showDialog(object.getString("message"));

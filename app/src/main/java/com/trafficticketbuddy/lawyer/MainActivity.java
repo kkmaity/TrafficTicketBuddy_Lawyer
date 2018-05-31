@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,12 +19,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.trafficticketbuddy.lawyer.adapter.AllCasesRecyclerAdapter;
+import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 import com.trafficticketbuddy.lawyer.model.login.Response;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
 import com.trafficticketbuddy.lawyer.adapter.MyAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,6 +44,11 @@ public class MainActivity extends BaseActivity {
     private static int currentPage = 0;
     private static final Integer[] XMEN= {R.drawable.home_banner_1,R.drawable.home_banner_1,R.drawable.home_banner_1,R.drawable.home_banner_1,R.drawable.home_banner_1};
     private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
+    private RecyclerView rvRecycler;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayoutManager mLayoutManager;
+    private List<com.trafficticketbuddy.lawyer.model.cases.Response> caseListData = new ArrayList<>();
+    private AllCasesRecyclerAdapter mAllCasesRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +64,8 @@ public class MainActivity extends BaseActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         linMyProfile=(LinearLayout)findViewById(R.id.linMyProfile);
         linSettings=(LinearLayout)findViewById(R.id.linSettings);
-        linFileCase=(LinearLayout)findViewById(R.id.linFileCase);
-        linMyCase=(LinearLayout)findViewById(R.id.linMyCase);
+       // linFileCase=(LinearLayout)findViewById(R.id.linFileCase);
+        //linMyCase=(LinearLayout)findViewById(R.id.linMyCase);
         linLogout=(LinearLayout)findViewById(R.id.linLogout);
         linMyCase_drawer=(LinearLayout)findViewById(R.id.linMyCase_drawer);
         linLogout=(LinearLayout)findViewById(R.id.linLogout);
@@ -63,14 +74,22 @@ public class MainActivity extends BaseActivity {
         profile_image=(ImageView)findViewById(R.id.profile_image);
         linMyProfile.setOnClickListener(this);
         linSettings.setOnClickListener(this);
-        linFileCase.setOnClickListener(this);
-        linMyCase.setOnClickListener(this);
+        //linFileCase.setOnClickListener(this);
+        //linMyCase.setOnClickListener(this);
         linLogout.setOnClickListener(this);
         linMyCase_drawer.setOnClickListener(this);
         linLogout.setOnClickListener(this);
         String deviceToken=    preference.getDeviceToken();
         System.out.println("!!!!!!!!!!!"+deviceToken);
         init();
+
+        rvRecycler = (RecyclerView)findViewById(R.id.rvRecycler);
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setEnabled(false);
+        mLayoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvRecycler.setLayoutManager(mLayoutManager);
+        setAdapterRecyclerView();
 
 
     }
@@ -114,12 +133,12 @@ public class MainActivity extends BaseActivity {
                 case R.id.linSettings:
                 startActivity(new Intent(MainActivity.this,SettingsActivity.class));
                 break;
-                case R.id.linFileCase:
-                startActivity(new Intent(MainActivity.this,FileCaseActivity.class));
-                break;
-                case R.id.linMyCase:
-                startActivity(new Intent(MainActivity.this,MyCaseActivity.class));
-                break;
+//                case R.id.linFileCase:
+//                startActivity(new Intent(MainActivity.this,FileCaseActivity.class));
+//                break;
+//                case R.id.linMyCase:
+//                startActivity(new Intent(MainActivity.this,MyCaseActivity.class));
+//                break;
                 case R.id.linMyCase_drawer:
                 startActivity(new Intent(MainActivity.this,MyCaseActivity.class));
                 break;
@@ -180,6 +199,18 @@ public class MainActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }*/
+    private void setAdapterRecyclerView() {
+        mAllCasesRecyclerAdapter=new AllCasesRecyclerAdapter(this, caseListData, new ItemClickListner() {
+            @Override
+            public void onItemClick(Object viewID, int position) {
+                switch (position){
+                    case R.id.linAllCase:
 
+                        break;
+                }
+            }
+        });
+        rvRecycler.setAdapter(mAllCasesRecyclerAdapter);
+    }
 
 }

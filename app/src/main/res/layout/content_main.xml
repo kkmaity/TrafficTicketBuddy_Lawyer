@@ -83,84 +83,29 @@
             </RelativeLayout>-->
 
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:background="@color/alice_blue"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
+            android:layout_weight="2">
+            <TextView
+                android:id="@+id/txtNoItem"
+                android:visibility="gone"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardElevation="@dimen/_2sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:cardBackgroundColor="@color/colorPrimary">
-                <LinearLayout
-                    android:id="@+id/linFileCase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    >
-                    <ImageView
-                        android:id="@+id/ivlogo"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_45sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:src="@drawable/icon_file_a_case"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#fff"
-                        android:textSize="@dimen/_13sdp"
-                        android:paddingBottom="@dimen/_10sdp"
-                        android:paddingTop="@dimen/_10sdp"
-
-                        android:fontFamily="@font/lato_regular"
-                        android:text="FILE A CASE" />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView
+                android:text="No Cases to Show"/>
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardElevation="@dimen/_2sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:cardBackgroundColor="@color/colorPrimaryDark">
-                <LinearLayout
-                    android:id="@+id/linMyCase"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    >
-                    <ImageView
-                        android:id="@+id/ivlogo1"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_45sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:src="@drawable/icon_my_cases"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_13sdp"
-                        android:paddingBottom="@dimen/_10sdp"
-                        android:paddingTop="@dimen/_10sdp"
-
-                        android:fontFamily="@font/lato_regular"
-                        android:text="MY CASES" />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 

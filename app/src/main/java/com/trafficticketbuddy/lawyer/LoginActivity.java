@@ -135,9 +135,6 @@ public class LoginActivity extends BaseActivity {
                         if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
                                 || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
                             startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                        }
-                        else if(mLoginMain.getResponse().getIsPhoneVerified().equalsIgnoreCase("0")){
-                            startActivity(new Intent(LoginActivity.this,OTPActivity.class));
                         }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
                             startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
                         }else{
@@ -178,9 +175,6 @@ public class LoginActivity extends BaseActivity {
                         if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
                                 || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
                             startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                        }
-                        else if(mLoginMain.getResponse().getIsPhoneVerified().equalsIgnoreCase("0")){
-                            startActivity(new Intent(LoginActivity.this,OTPActivity.class));
                         }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
                             startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
                         }else{
@@ -222,9 +216,6 @@ public class LoginActivity extends BaseActivity {
                         if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
                                 || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
                             startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                        }
-                        else if(mLoginMain.getResponse().getIsPhoneVerified().equalsIgnoreCase("0")){
-                            startActivity(new Intent(LoginActivity.this,OTPActivity.class));
                         }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
                             startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
                         }else{
