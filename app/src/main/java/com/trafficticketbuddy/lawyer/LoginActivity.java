@@ -289,7 +289,6 @@ public class LoginActivity extends BaseActivity {
         return map;
     }
 
-
     private Map<String,String> getGoogleParam(String first_name,String last_name,String email,String phone,
                                           String gender,String image,String google_id,String state,
                                           String country,String city){

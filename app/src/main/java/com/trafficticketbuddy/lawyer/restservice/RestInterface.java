@@ -4,6 +4,7 @@ import com.trafficticketbuddy.lawyer.model.StateNameMain;
 import com.trafficticketbuddy.lawyer.model.cases.GetAllCasesMain;
 import com.trafficticketbuddy.lawyer.model.city.CityMain;
 import com.trafficticketbuddy.lawyer.model.country.CountryMain;
+import com.trafficticketbuddy.lawyer.model.homeBanner.HomeBannerMain;
 import com.trafficticketbuddy.lawyer.model.login.LoginMain;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
@@ -78,7 +79,8 @@ public interface RestInterface {
     @POST("api/v1/user/getAllCases")
     Call<GetAllCasesMain> getAllCases(@FieldMap Map<String,String> params);
 
-
+ @POST("api/v1/user/banners")
+ Call<HomeBannerMain> banners();
 
 
  /*params=> user_id, case_details, city, state, case_front_img, case_rear_img, driving_license*/

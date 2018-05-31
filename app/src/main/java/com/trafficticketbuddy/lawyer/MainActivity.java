@@ -3,6 +3,8 @@ package com.trafficticketbuddy.lawyer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,12 +18,20 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.trafficticketbuddy.lawyer.apis.ApiHomeBanner;
+import com.trafficticketbuddy.lawyer.fragement.AutoScrollPagerFragment;
+import com.trafficticketbuddy.lawyer.fragement.TextFragment;
+import com.trafficticketbuddy.lawyer.model.homeBanner.HomeBannerMain;
 import com.trafficticketbuddy.lawyer.model.login.Response;
+import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
 import com.trafficticketbuddy.lawyer.adapter.MyAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,10 +44,9 @@ public class MainActivity extends BaseActivity {
     private TextView tvName,tvEmail;
     private ImageView profile_image;
     private Response mLogin;
-    private static ViewPager mPager;
-    private static int currentPage = 0;
-    private static final Integer[] XMEN= {R.drawable.home_banner_1,R.drawable.home_banner_1,R.drawable.home_banner_1,R.drawable.home_banner_1,R.drawable.home_banner_1};
-    private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
+    private  ViewPager mPager;
+
+    public static List<com.trafficticketbuddy.lawyer.model.homeBanner.Response> bannerList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +60,7 @@ public class MainActivity extends BaseActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mPager = (ViewPager) findViewById(R.id.pager);
         linMyProfile=(LinearLayout)findViewById(R.id.linMyProfile);
         linSettings=(LinearLayout)findViewById(R.id.linSettings);
         linFileCase=(LinearLayout)findViewById(R.id.linFileCase);
@@ -76,31 +86,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void init() {
-        for(int i=0;i<XMEN.length;i++)
-            XMENArray.add(XMEN[i]);
-
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(new MyAdapter(MainActivity.this,XMENArray));
-        CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
-        indicator.setViewPager(mPager);
-
-        // Auto start of viewpager
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == XMEN.length) {
-                    currentPage = 0;
-                }
-                mPager.setCurrentItem(currentPage++, true);
-            }
-        };
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 2500, 2500);
+        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(configuration);
+        getallBanner();
     }
 
     @Override
@@ -180,6 +168,47 @@ public class MainActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }*/
+    void getallBanner(){
+        if (isNetworkConnected()){
+            showProgressDialog();
+            new ApiHomeBanner(new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    bannerList.clear();
+                    dismissProgressDialog();
+                    HomeBannerMain main=(HomeBannerMain)t;
+                    if (main.getStatus()){
+                        bannerList.addAll(main.getResponse());
+                        mPager.setOffscreenPageLimit(bannerList.size());
+                        mPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+                            @Override
+                            public Fragment getItem(int i) {
+                                if (i == 0) {
+                                    return new AutoScrollPagerFragment();
+                                }
+                                return TextFragment.newInstance("Fragment " + i);
+                            }
 
+                            @Override
+                            public int getCount() {
+                                return bannerList.size();
+                            }
+                        });
+                    }
+
+                }
+
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
+    }
 
 }
