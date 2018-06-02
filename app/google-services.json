@@ -19,14 +19,6 @@
           "client_type": 3
         },
         {
-          "client_id": "809094861678-o1hg1rq4bg4k39s2bh42t9gpko2rfqk2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.trafficticketbuddy.lawyer",
-            "certificate_hash": "bda4e78aa0e906cc523cf462889fe16e31eedf4a"
-          }
-        },
-        {
           "client_id": "809094861678-1or65826ll5c7lv29bfk43tjrtqp8tsk.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -45,13 +37,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "809094861678-lnsn2bbe6osnguo271qaeq4rfv56d3ma.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

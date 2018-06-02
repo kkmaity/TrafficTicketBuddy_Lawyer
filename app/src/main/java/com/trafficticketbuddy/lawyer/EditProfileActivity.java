@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,8 +34,10 @@ import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +68,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,14 +108,22 @@ public class EditProfileActivity extends BaseActivity {
     private Bitmap image_profile,image_license;
     private int image_type = 1;
     private File Image_profile,Image_license;
+    private ArrayList<File> degree_image = new ArrayList<>();
     private CardView cardUpdate;
+    private ImageView ivadd_degree;
+    private ImageView ivdegree_1,ivdegree_2,ivdegree_3;
+    private RelativeLayout rldegree_1,rldegree_2,rldegree_3;
+    private LinearLayout lldegree;
+    private ImageView ivdegreecross_1,ivdegreecross_2,ivdegreecross_3;
+    private EditText et_degree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
         ivProfileImage = (ImageView)findViewById(R.id.ivProfileImage);
-        ivLicense = (ImageView)findViewById(R.id.ivLicense);
+       // ivLicense = (ImageView)findViewById(R.id.ivLicense);
+
         et_first_name = (EditText)findViewById(R.id.et_first_name);
         et_last_name = (EditText)findViewById(R.id.et_last_name);
         //et_email = (EditText)findViewById(R.id.et_email);
@@ -120,13 +132,30 @@ public class EditProfileActivity extends BaseActivity {
         et_city = (EditText) findViewById(R.id.et_city);
         et_country = (EditText) findViewById(R.id.et_country);
         cardUpdate = (CardView) findViewById(R.id.cardUpdate);
+        et_degree = (EditText) findViewById(R.id.et_degree);
+
+        ivadd_degree = (ImageView)findViewById(R.id.ivadd_degree);
+        ivdegree_1 = (ImageView)findViewById(R.id.ivdegree_1);
+        ivdegree_2 = (ImageView)findViewById(R.id.ivdegree_2);
+        ivdegree_3 = (ImageView)findViewById(R.id.ivdegree_3);
+        ivdegreecross_1 = (ImageView)findViewById(R.id.ivdegreecross_1);
+        ivdegreecross_2 = (ImageView)findViewById(R.id.ivdegreecross_2);
+        ivdegreecross_3 = (ImageView)findViewById(R.id.ivdegreecross_3);
+        rldegree_1 = (RelativeLayout)findViewById(R.id.rldegree_1);
+        rldegree_2 = (RelativeLayout)findViewById(R.id.rldegree_2);
+        rldegree_3 = (RelativeLayout)findViewById(R.id.rldegree_3);
+        lldegree = (LinearLayout)findViewById(R.id.lldegree);
 
         ivProfileImage.setOnClickListener(this);
         et_state.setOnClickListener(this);
         et_city.setOnClickListener(this);
         et_country.setOnClickListener(this);
-        ivLicense.setOnClickListener(this);
+      //  ivLicense.setOnClickListener(this);
         cardUpdate.setOnClickListener(this);
+        ivadd_degree.setOnClickListener(this);
+        ivdegreecross_1.setOnClickListener(this);
+        ivdegreecross_2.setOnClickListener(this);
+        ivdegreecross_3.setOnClickListener(this);
 
         Gson gson = new Gson();
         String json = preference.getString("login_user", "");
@@ -143,7 +172,10 @@ public class EditProfileActivity extends BaseActivity {
             et_state.setText(mLogin.getState());
         }if(mLogin.getCity()!=null){
             et_city.setText(mLogin.getCity());
-        }if(mLogin.getProfileImage()!=null && !mLogin.getProfileImage().isEmpty()){
+        }if(mLogin.getDegree()!=null){
+            et_degree.setText(mLogin.getDegree());
+        }
+        if(mLogin.getProfileImage()!=null && !mLogin.getProfileImage().isEmpty()){
             if(mLogin.getProfileImage().startsWith("http")){
                 Glide.with(this).load(mLogin.getProfileImage()).into(ivProfileImage);
             }else{
@@ -195,6 +227,32 @@ public class EditProfileActivity extends BaseActivity {
                 break;
             case R.id.cardUpdate:
                 isValidate();
+                break;
+            case R.id.ivadd_degree:
+                if (new Permission().check_WRITE_FolderPermission2(this)) {
+                    if (new Permission().checkCameraPermission(this)) {
+                        image_type=3;
+                        setImage();
+                    }
+                }
+                break;
+            case R.id.ivdegreecross_1:
+                if(degree_image.size()>=1) {
+                    degree_image.remove(0);
+                    regeneratedegreeImagesafterdeletion();
+                }
+                break;
+            case R.id.ivdegreecross_2:
+                if(degree_image.size()>=2) {
+                    degree_image.remove(1);
+                    regeneratedegreeImagesafterdeletion();
+                }
+                break;
+            case R.id.ivdegreecross_3:
+                if(degree_image.size()>=3) {
+                    degree_image.remove(2);
+                    regeneratedegreeImagesafterdeletion();
+                }
                 break;
 
         }
@@ -276,10 +334,12 @@ public class EditProfileActivity extends BaseActivity {
             et_state.setError("Please select state");
         }else if(et_city.getText().toString().isEmpty()){
             et_city.setError("Please select city");
+        }else if(et_degree.getText().toString().isEmpty()){
+            et_degree.setError("Please enter degree");
         }else if(Image_profile==null && mLogin.getProfileImage().isEmpty()){
             showDialog("Please select profile image");
-        }else if(Image_license==null && mLogin.getLicenseImage().isEmpty()){
-            showDialog("Please select licence image");
+        }else if(degree_image==null && degree_image.size()<=0){
+            showDialog("Please provide educational certificate");
         }else {
             doEditProfileApi();
         }
@@ -299,9 +359,6 @@ public class EditProfileActivity extends BaseActivity {
                         if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
                                 || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
 
-                        }
-                        else if(mLoginMain.getResponse().getIsPhoneVerified().equalsIgnoreCase("0")){
-                            recendOTP();
                         }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
                             startActivity(new Intent(EditProfileActivity.this,EmailOTPActivity.class));
                             finish();
@@ -339,6 +396,7 @@ public class EditProfileActivity extends BaseActivity {
         map.put("country",RequestBody.create(MediaType.parse("text/plain"), et_country.getText().toString()));
         map.put("state",RequestBody.create(MediaType.parse("text/plain"), et_state.getText().toString()));
         map.put("city",RequestBody.create(MediaType.parse("text/plain"), et_city.getText().toString()));
+        map.put("degree",RequestBody.create(MediaType.parse("text/plain"), et_degree.getText().toString()));
         return map;
     }
 
@@ -348,9 +406,10 @@ public class EditProfileActivity extends BaseActivity {
             MultipartBody.Part profile_image = prepareFilePart("profile_image", Uri.fromFile(Image_profile));
             map.put("profile_image",profile_image);
         }
-        if(Image_license!=null) {
-            MultipartBody.Part license_image = prepareFilePart("license_image", Uri.fromFile(Image_license));
-            map.put("license_image",license_image);
+        for(int i=0;i<degree_image.size();i++){
+            int j = i+1;
+            MultipartBody.Part image = prepareFilePart("degree_image_"+j, Uri.fromFile(degree_image.get(i)));
+            map.put("degree_image_"+j,image);
         }
         return map;
     }
@@ -629,10 +688,12 @@ public class EditProfileActivity extends BaseActivity {
                             image_profile=BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
                             ivProfileImage.setImageBitmap(image_profile);
                             Image_profile = compressedImageFile;
-                        }else{
+                        }else if(image_type==2){
                             image_license=BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
                             ivLicense.setImageBitmap(image_license);
                             Image_license = compressedImageFile;
+                        }else if(image_type==3){
+                            regeneratedegreeImages(compressedImageFile);
                         }
                         /*EventBus.getDefault().post(new EventProfilePicSelectedForUpload(compressedImageFile.getAbsolutePath()));
                         EventBus.getDefault().post(new EventProfilePicSelectedForUpload4(compressedImageFile.getAbsolutePath()));*/
@@ -673,10 +734,12 @@ public class EditProfileActivity extends BaseActivity {
                             image_profile=BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
                             ivProfileImage.setImageBitmap(image_profile);
                             Image_profile = compressedImageFile;
-                        }else{
+                        }else if(image_type==2){
                             image_license=BitmapFactory.decodeFile(compressedImageFile.getAbsolutePath());
                             ivLicense.setImageBitmap(image_license);
                             Image_license = compressedImageFile;
+                        }else if(image_type==3){
+                            regeneratedegreeImages(compressedImageFile);
                         }
                        /* EventBus.getDefault().post(new EventProfilePicSelectedForUpload(compressedImageFile.getAbsolutePath()));
                         EventBus.getDefault().post(new EventProfilePicSelectedForUpload4(compressedImageFile.getAbsolutePath()));*/
@@ -687,6 +750,53 @@ public class EditProfileActivity extends BaseActivity {
             }
         }
     }
+
+    private void regeneratedegreeImagesafterdeletion(){
+        if(degree_image!=null && degree_image.size()<=3){
+            if(degree_image.size()==0){
+                lldegree.setVisibility(View.GONE);
+            }else {
+                if (degree_image.size() == 1){
+                    rldegree_1.setVisibility(View.VISIBLE);
+                    ivdegree_1.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(0).getAbsolutePath()));
+                    rldegree_2.setVisibility(View.INVISIBLE);
+                    rldegree_3.setVisibility(View.INVISIBLE);
+                }else if (degree_image.size() == 2){
+                    rldegree_2.setVisibility(View.VISIBLE);
+                    ivdegree_2.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(1).getAbsolutePath()));
+                    rldegree_3.setVisibility(View.INVISIBLE);
+                }else if (degree_image.size() == 3) {
+                    rldegree_3.setVisibility(View.VISIBLE);
+                    ivdegree_3.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(2).getAbsolutePath()));
+                }
+            }
+        }else{
+            showDialog("Maximum three images can be uploaded");
+        }
+    }
+
+    private void regeneratedegreeImages(File compressedImageFile) {
+        if(degree_image!=null && degree_image.size()<=3){
+            degree_image.add(compressedImageFile);
+            lldegree.setVisibility(View.VISIBLE);
+            if(degree_image.size()==1){
+                rldegree_1.setVisibility(View.VISIBLE);
+                ivdegree_1.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(0).getAbsolutePath()));
+                rldegree_2.setVisibility(View.INVISIBLE);
+                rldegree_3.setVisibility(View.INVISIBLE);
+            }else if(degree_image.size()==2){
+                rldegree_2.setVisibility(View.VISIBLE);
+                ivdegree_2.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(1).getAbsolutePath()));
+                rldegree_3.setVisibility(View.INVISIBLE);
+            }else if(degree_image.size()==3){
+                rldegree_3.setVisibility(View.VISIBLE);
+                ivdegree_3.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(2).getAbsolutePath()));
+            }
+        }else{
+            showDialog("Maximum three images can be uploaded");
+        }
+    }
+
     public static String getPath(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;

@@ -197,6 +197,9 @@ public class MainActivity extends BaseActivity {
         return true;
     }*/
     private void setAdapterRecyclerView() {
+        caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());
+        caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());
+        caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());
         mAllCasesRecyclerAdapter = new AllCasesRecyclerAdapter(this, caseListData, new ItemClickListner() {
             @Override
             public void onItemClick(Object viewID, int position) {

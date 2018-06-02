@@ -33,11 +33,13 @@ public class MyProfileActivity extends BaseActivity implements AppBarLayout.OnOf
     @Bind(R.id.fab)
     protected ImageView fab;
 
-    private ImageView image,ivLicense;
+    private ImageView image,ivLicense,ivdegree_1,ivdegree_2,ivdegree_3;
     private EditText tv_email, tv_phone, tv_country, tv_state, tv_city;
     private com.trafficticketbuddy.lawyer.model.login.Response mLogin;
 
     private boolean isHideToolbarView = false;
+    private EditText tv_degree;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +47,16 @@ public class MyProfileActivity extends BaseActivity implements AppBarLayout.OnOf
         setContentView(R.layout.activity_my_profile);
 
         image = (ImageView)findViewById(R.id.image);
-        ivLicense = (ImageView)findViewById(R.id.ivLicense);
+        //ivLicense = (ImageView)findViewById(R.id.ivLicense);
         tv_email = (EditText) findViewById(R.id.tv_email);
         tv_phone = (EditText) findViewById(R.id.tv_phone);
         tv_country = (EditText) findViewById(R.id.tv_country);
         tv_state = (EditText) findViewById(R.id.tv_state);
         tv_city = (EditText) findViewById(R.id.tv_city);
+        tv_degree = (EditText) findViewById(R.id.tv_degree);
+        ivdegree_1 = (ImageView)findViewById(R.id.ivdegree_1);
+        ivdegree_2 = (ImageView)findViewById(R.id.ivdegree_2);
+        ivdegree_3 = (ImageView)findViewById(R.id.ivdegree_3);
 
         Gson gson = new Gson();
         String json = preference.getString("login_user", "");
@@ -72,19 +78,22 @@ public class MyProfileActivity extends BaseActivity implements AppBarLayout.OnOf
             tv_state.setText(mLogin.getState());
         }if(mLogin.getCity()!=null){
             tv_city.setText(mLogin.getCity());
-        }if(mLogin.getProfileImage()!=null){
+        }if(mLogin.getDegree()!=null){
+            tv_degree.setText(mLogin.getDegree());
+        }
+        if(mLogin.getProfileImage()!=null){
             if(mLogin.getProfileImage().startsWith("http")){
                 Glide.with(this).load(mLogin.getProfileImage()).into(image);
             }else{
                 String path = Constant.BASE_URL+mLogin.getProfileImage();
                 Glide.with(this).load(path).into(image);
             }
-
-        }if(mLogin.getLicenseImage()!=null){
-            String path = Constant.BASE_URL+mLogin.getLicenseImage();
-            Glide.with(this).load(path).into(ivLicense);
-
         }
+//        if(mLogin.getLicenseImage()!=null){
+//            String path = Constant.BASE_URL+mLogin.getLicenseImage();
+//            Glide.with(this).load(path).into(ivLicense);
+//
+//        }
 
     }
 

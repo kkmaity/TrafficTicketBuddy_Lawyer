@@ -20,6 +20,19 @@ public class Response {
     @SerializedName("phone")
     @Expose
     private String phone;
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    @SerializedName("degree")
+    @Expose
+
+    private String degree;
     @SerializedName("profile_image")
     @Expose
     private String profileImage;

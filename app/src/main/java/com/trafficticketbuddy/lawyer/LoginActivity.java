@@ -268,6 +268,7 @@ public class LoginActivity extends BaseActivity {
         map.put("last_name",last_name);
         map.put("email",email);
         map.put("phone",phone);
+        map.put("degree","");
         map.put("gender",gender);
         map.put("image",image);
         map.put("facebook_id",facebook_id);
@@ -288,6 +289,7 @@ public class LoginActivity extends BaseActivity {
         map.put("last_name",last_name);
         map.put("email",email);
         map.put("phone",phone);
+        map.put("degree","");
         map.put("gender",gender);
         map.put("image",image);
         map.put("google_id",google_id);

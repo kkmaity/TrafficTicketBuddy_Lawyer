@@ -27,7 +27,7 @@ public class AllCasesRecyclerAdapter extends RecyclerView.Adapter<AllCasesRecycl
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linAllCase;
         ImageView ivLicense,ivBackImage,ivFontImage;
-        TextView tvCaseno,tvDesc,tvStateCity,tvDate,tvTime,tvBidCount,tvStatus;
+        TextView tvCaseno,tvDesc,tvStateCity,tvDate,tvTime,tvBidCount;
         public MyViewHolder(View view) {
             super(view);
             linAllCase = (LinearLayout)view.findViewById(R.id.linAllCase);
@@ -40,7 +40,6 @@ public class AllCasesRecyclerAdapter extends RecyclerView.Adapter<AllCasesRecycl
             tvDate = (TextView)view.findViewById(R.id.tvDate);
             tvTime = (TextView)view.findViewById(R.id.tvTime);
             tvBidCount = (TextView)view.findViewById(R.id.tvBidCount);
-            tvStatus = (TextView)view.findViewById(R.id.tvStatus);
 
         }
     }
@@ -64,22 +63,21 @@ public class AllCasesRecyclerAdapter extends RecyclerView.Adapter<AllCasesRecycl
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
-                .thumbnail(0.5f)
-                .into(holder.ivLicense);
-        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseFrontImg())
-                .thumbnail(0.5f)
-                .into(holder.ivFontImage);
-        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseRearImg())
-                .thumbnail(0.5f)
-                .into(holder.ivBackImage);
-        holder.tvCaseno.setText(dataList.get(position).getCaseNumber());
-        holder.tvStateCity.setText(dataList.get(position).getState()+" "+dataList.get(position).getCity());
-        holder.tvDesc.setText(dataList.get(position).getCaseDetails());
+//        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
+//                .thumbnail(0.5f)
+//                .into(holder.ivLicense);
+//        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseFrontImg())
+//                .thumbnail(0.5f)
+//                .into(holder.ivFontImage);
+//        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseRearImg())
+//                .thumbnail(0.5f)
+//                .into(holder.ivBackImage);
+//        holder.tvCaseno.setText(dataList.get(position).getCaseNumber());
+//        holder.tvStateCity.setText(dataList.get(position).getState()+" "+dataList.get(position).getCity());
+//        holder.tvDesc.setText(dataList.get(position).getCaseDetails());
         // holder.tvDate.setText("");
         //holder.tvTime.setText("");
         //holder.tvBidCount.setText("");
-        holder.tvStatus.setText(dataList.get(position).getStatus());
         holder.linAllCase.setTag(position);
         holder.linAllCase.setOnClickListener(new View.OnClickListener() {
             @Override

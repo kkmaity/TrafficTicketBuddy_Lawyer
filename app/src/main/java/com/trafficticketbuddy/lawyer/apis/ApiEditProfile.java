@@ -28,7 +28,8 @@ public class ApiEditProfile {
 
     public void doWebServiceCall() {
 
-        Call<LoginMain> data = RestService.getInstance().restInterface.editprofile(param,imageparam.get("profile_image"),imageparam.get("license_image"));
+        Call<LoginMain> data = RestService.getInstance().restInterface.editprofile(param,imageparam.get("profile_image"),
+                imageparam.get("degree_image_1"),imageparam.get("degree_image_2"),imageparam.get("degree_image_3"));
         APIHelper.enqueueWithRetry(data, new Callback<LoginMain>() {
             @Override
             public void onResponse(Call<LoginMain> call, Response<LoginMain> response) {

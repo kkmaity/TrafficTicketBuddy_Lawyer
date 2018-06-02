@@ -214,6 +214,43 @@
                                 android:gravity="center"
                                 >
                                 <EditText
+                                    android:id="@+id/etDegree"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:background="@null"
+                                    android:hint="Degree"
+                                    android:textColor="@color/txt_grey"
+                                    android:textColorHint="@color/hint_grey"
+                                    android:inputType="phone"
+                                    android:maxLines="1"
+                                    android:maxLength="150"
+                                    android:paddingRight="@dimen/_5sdp"
+                                    android:paddingBottom="@dimen/_6sdp"
+                                    android:paddingTop="@dimen/_6sdp"
+                                    />
+                                <ImageView
+                                    android:layout_width="@dimen/_16sdp"
+                                    android:layout_height="@dimen/_16sdp"
+                                    android:visibility="invisible"
+                                    android:src="@drawable/icon_contact"/>
+                            </LinearLayout>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/grey"></View>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:gravity="center"
+                                >
+                                <EditText
                                     android:id="@+id/etPassword"
                                     android:layout_width="0dp"
                                     android:layout_weight="1"

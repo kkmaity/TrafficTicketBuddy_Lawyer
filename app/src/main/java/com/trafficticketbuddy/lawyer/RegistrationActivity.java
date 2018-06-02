@@ -59,6 +59,7 @@ public class RegistrationActivity extends BaseActivity {
     private String nameState="";
     private String nameCity="";
     private String countryID="1";
+    private EditText etDegree;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class RegistrationActivity extends BaseActivity {
         etLastName=(EditText)findViewById(R.id.etLastName);
         etEmail=(EditText)findViewById(R.id.etEmail);
         etPhone=(EditText)findViewById(R.id.etPhone);
+        etDegree=(EditText)findViewById(R.id.etDegree);
         etPassword=(EditText)findViewById(R.id.etPassword);
         etState=(EditText)findViewById(R.id.etState);
         etCity=(EditText)findViewById(R.id.etCity);
@@ -320,7 +322,7 @@ public class RegistrationActivity extends BaseActivity {
         map.put("country", tvCountry.getText().toString());
         map.put("state", etState.getText().toString());
         map.put("city", etCity.getText().toString());
-        map.put("degree", "NA");
+        map.put("degree", etDegree.getText().toString());
         map.put("device_type", "ANDROID");
         map.put("token", preference.getDeviceToken());
         return map;
@@ -342,7 +344,11 @@ public class RegistrationActivity extends BaseActivity {
         }else if (etPhone.getText().toString().isEmpty()){
             showDialog("Please enter phone No.");
             return false;
-        }else if (etPassword.getText().toString().isEmpty()){
+        }else if (etDegree.getText().toString().isEmpty()){
+            showDialog("Please enter Degree.");
+            return false;
+        }
+        else if (etPassword.getText().toString().isEmpty()){
             showDialog("Please enter password.");
             return false;
         }else if (etPassword.getText().toString().isEmpty()){

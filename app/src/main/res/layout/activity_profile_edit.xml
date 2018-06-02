@@ -238,6 +238,48 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
                                 android:background="@color/grey"></View>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Degree"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:textSize="@dimen/_11sdp"/>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    >
+                                    <EditText
+                                        android:id="@+id/et_degree"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="@dimen/_11sdp"
+                                        android:fontFamily="@font/lato_regular"
+                                        android:background="@null"
+                                        android:textColor="@color/txt_grey"
+                                        android:textColorHint="@color/hint_grey"
+                                        android:inputType="textEmailAddress"
+                                        android:maxLines="1"
+                                        android:maxLength="150"
+                                        android:paddingRight="@dimen/_5sdp"
+                                        android:paddingBottom="@dimen/_6sdp"
+                                        android:paddingTop="@dimen/_6sdp"
+                                        />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/grey"></View>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -392,16 +434,90 @@
                                     android:layout_weight="3"
                                     android:layout_gravity="center"
                                     android:fontFamily="@font/lato_regular"
-                                    android:text="Upload drivingLicense:"/>
+                                    android:text="Upload education certificates:"/>
 
                                 <ImageView
-                                    android:id="@+id/ivLicense"
+                                    android:id="@+id/ivadd_degree"
                                     android:layout_width="0dp"
-                                    android:layout_height="@dimen/_51sdp"
-                                    android:layout_weight="2"
-                                    android:src="@drawable/upload_file"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:src="@drawable/ic_add_a_photo_black_32dp"/>
+
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:id="@+id/lldegree"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_60sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:visibility="gone"
+                                android:orientation="horizontal">
+
+                                    <RelativeLayout
+                                        android:id="@+id/rldegree_1"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:padding="@dimen/_3sdp"
+                                        android:layout_height="wrap_content">
+                                        <ImageView
+                                            android:id="@+id/ivdegree_1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_51sdp"
+                                            android:layout_weight="1"
+                                            android:scaleType="fitXY"
+                                            android:padding="@dimen/_5sdp"
+                                            android:src="@drawable/upload_file"/>
+                                        <ImageView
+                                            android:id="@+id/ivdegreecross_1"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:src="@drawable/ic_cancel_black_24dp"/>
+                                    </RelativeLayout>
+                                    <RelativeLayout
+                                        android:id="@+id/rldegree_2"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:padding="@dimen/_3sdp"
+                                        android:layout_height="wrap_content">
+                                        <ImageView
+                                            android:id="@+id/ivdegree_2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_51sdp"
+                                            android:layout_weight="1"
+                                            android:scaleType="fitXY"
+                                            android:padding="@dimen/_5sdp"
+                                            android:src="@drawable/upload_file"/>
+                                        <ImageView
+                                            android:id="@+id/ivdegreecross_2"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:src="@drawable/ic_cancel_black_24dp"/>
+                                    </RelativeLayout>
+                                    <RelativeLayout
+                                        android:id="@+id/rldegree_3"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:padding="@dimen/_3sdp"
+                                        android:layout_height="wrap_content">
+                                        <ImageView
+                                            android:id="@+id/ivdegree_3"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_51sdp"
+                                            android:layout_weight="1"
+                                            android:scaleType="fitXY"
+                                            android:padding="@dimen/_5sdp"
+                                            android:src="@drawable/upload_file"/>
+                                        <ImageView
+                                            android:id="@+id/ivdegreecross_3"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignParentRight="true"
+                                            android:src="@drawable/ic_cancel_black_24dp"/>
+                                    </RelativeLayout>
+                                </LinearLayout>
 
                             <android.support.v7.widget.CardView
                                 android:id="@+id/cardUpdate"
