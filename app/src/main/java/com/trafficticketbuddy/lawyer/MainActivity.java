@@ -108,7 +108,6 @@ public class MainActivity extends BaseActivity {
         rvRecycler.setLayoutManager(mLayoutManager);
         setAdapterRecyclerView();
         fetchAllCases();
-
     }
 
     private void init() {
@@ -182,7 +181,9 @@ public class MainActivity extends BaseActivity {
                 String path = Constant.BASE_URL + mLogin.getProfileImage();
                 Glide.with(this).load(path).into(profile_image);
             }
+            //getAllCase();
         }
+
 
     }
 
@@ -294,7 +295,7 @@ public class MainActivity extends BaseActivity {
 
     private Map<String, String> setParam() {
         Map<String,String>map=new HashMap<>();
-        map.put("user_id",mLogin.getId());
+        map.put("lawyer_id",mLogin.getId());
         return map;
     }
 

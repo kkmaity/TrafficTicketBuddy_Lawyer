@@ -69,6 +69,8 @@ public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecycler
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
       /*  Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
+        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
+>>>>>>> 2e6ec75d34af5cde255f5bbe17edabaa3c7e6be1:app/src/main/java/com/trafficticketbuddy/lawyer/adapter/AllCasesRecyclerAdapter.java
                 .thumbnail(0.5f)
                 .into(holder.ivLicense);
         Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseFrontImg())
@@ -76,6 +78,7 @@ public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecycler
                 .into(holder.ivFontImage);
         Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseRearImg())
                 .thumbnail(0.5f)
+<<<<<<< HEAD:app/src/main/java/com/trafficticketbuddy/lawyer/adapter/MadeBidRecyclerAdapter.java
                 .into(holder.ivBackImage);*/
         ImageLoader.getInstance().displayImage(Constant.BASE_URL+dataList.get(position).getDrivingLicense(), holder.ivLicense, BaseActivity.cacheOptions);
         ImageLoader.getInstance().displayImage(Constant.BASE_URL+dataList.get(position).getCaseFrontImg(), holder.ivFontImage, BaseActivity.cacheOptions);
@@ -88,6 +91,12 @@ public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecycler
          holder.tvDate.setText(""+splited[0]);
         holder.tvTime.setText(""+splited[1]);
         holder.tvBidCount.setText(""+dataList.get(position).getBidCount());
+        holder.tvCaseno.setText(dataList.get(position).getCaseNumber());
+        holder.tvStateCity.setText(dataList.get(position).getState()+" "+dataList.get(position).getCity());
+        holder.tvDesc.setText(dataList.get(position).getCaseDetails());
+        // holder.tvDate.setText("");
+        //holder.tvTime.setText("");
+        //holder.tvBidCount.setText("");
         holder.linAllCase.setTag(position);
         holder.linAllCase.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -189,14 +189,32 @@ public class EditProfileActivity extends BaseActivity {
             if(mLogin.getProfileImage().startsWith("http")){
                 Glide.with(this).load(mLogin.getProfileImage()).into(ivProfileImage);
             }else{
-                String path = Constant.BASE_URL+mLogin.getProfileImage();
-                Glide.with(this).load(path).into(ivProfileImage);
+                if(mLogin.getProfileImage().contains("client_profile_image")){
+                    String path = mLogin.getProfileImage();
+                    path = path.replace("client_profile_image","lawyer_profile_image");
+                    path = Constant.BASE_URL+path;
+                    Glide.with(this).load(path).into(ivProfileImage);
+                }else {
+                    String path = Constant.BASE_URL + mLogin.getProfileImage();
+                    Glide.with(this).load(path).into(ivProfileImage);
+                }
             }
-
-        }if(mLogin.getLicenseImage()!=null && !mLogin.getLicenseImage().isEmpty()){
-            String path = Constant.BASE_URL+mLogin.getLicenseImage();
-            Glide.with(this).load(path).into(ivLicense);
-
+        }
+        if(mLogin.getDegreeImages()!=null && mLogin.getDegreeImages().size()>0){
+            lldegree.setVisibility(View.VISIBLE);
+            for (int i =0;i<mLogin.getDegreeImages().size();i++) {
+                String path = Constant.BASE_URL+"uploadImage/degree/"+mLogin.getDegreeImages().get(i).getImage();
+                if(i==0) {
+                    ivdegree_1.setVisibility(View.VISIBLE);
+                    Glide.with(this).load(path).into(ivdegree_1);
+                }else if(i==1){
+                    ivdegree_2.setVisibility(View.VISIBLE);
+                    Glide.with(this).load(path).into(ivdegree_2);
+                }else if(i==2){
+                    ivdegree_3.setVisibility(View.VISIBLE);
+                    Glide.with(this).load(path).into(ivdegree_3);
+                }
+            }
         }
     }
 
@@ -790,15 +808,18 @@ public class EditProfileActivity extends BaseActivity {
             degree_image.add(compressedImageFile);
             lldegree.setVisibility(View.VISIBLE);
             if(degree_image.size()==1){
+                ivdegreecross_1.setVisibility(View.VISIBLE);
                 rldegree_1.setVisibility(View.VISIBLE);
                 ivdegree_1.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(0).getAbsolutePath()));
                 rldegree_2.setVisibility(View.INVISIBLE);
                 rldegree_3.setVisibility(View.INVISIBLE);
             }else if(degree_image.size()==2){
+                ivdegreecross_2.setVisibility(View.VISIBLE);
                 rldegree_2.setVisibility(View.VISIBLE);
                 ivdegree_2.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(1).getAbsolutePath()));
                 rldegree_3.setVisibility(View.INVISIBLE);
             }else if(degree_image.size()==3){
+                ivdegreecross_3.setVisibility(View.VISIBLE);
                 rldegree_3.setVisibility(View.VISIBLE);
                 ivdegree_3.setImageBitmap(BitmapFactory.decodeFile(degree_image.get(2).getAbsolutePath()));
             }

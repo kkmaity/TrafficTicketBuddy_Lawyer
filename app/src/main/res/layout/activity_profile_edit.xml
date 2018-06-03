@@ -488,6 +488,7 @@
                                             android:id="@+id/ivdegreecross_1"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:visibility="invisible"
                                             android:layout_alignParentRight="true"
                                             android:src="@drawable/ic_cancel_black_24dp"/>
                                     </RelativeLayout>
@@ -509,6 +510,7 @@
                                             android:id="@+id/ivdegreecross_2"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:visibility="invisible"
                                             android:layout_alignParentRight="true"
                                             android:src="@drawable/ic_cancel_black_24dp"/>
                                     </RelativeLayout>
@@ -531,6 +533,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_alignParentRight="true"
+                                            android:visibility="invisible"
                                             android:src="@drawable/ic_cancel_black_24dp"/>
                                     </RelativeLayout>
                                 </LinearLayout>
