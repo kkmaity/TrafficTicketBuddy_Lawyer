@@ -77,7 +77,7 @@ public interface RestInterface {
 
 
    @FormUrlEncoded
-    @POST("api/v1/user/getAllCases")
+    @POST("api/v1/user/fetchCasesOflawyer")
     Call<GetAllCasesMain> getAllCases(@FieldMap Map<String,String> params);
 
  @POST("api/v1/user/banners")

@@ -89,11 +89,22 @@ public class MyProfileActivity extends BaseActivity implements AppBarLayout.OnOf
                 Glide.with(this).load(path).into(image);
             }
         }
-//        if(mLogin.getLicenseImage()!=null){
-//            String path = Constant.BASE_URL+mLogin.getLicenseImage();
-//            Glide.with(this).load(path).into(ivLicense);
-//
-//        }
+        if(mLogin.getDegreeImages()!=null && mLogin.getDegreeImages().size()>0){
+            for (int i =0;i<mLogin.getDegreeImages().size();i++) {
+                String path = Constant.BASE_URL+"uploadimage/degree/"+mLogin.getDegreeImages().get(i).getImage();
+                if(i==0) {
+                    ivdegree_1.setVisibility(View.VISIBLE);
+                    loadImage(this, path, ivdegree_1);
+                }else if(i==1){
+                    ivdegree_2.setVisibility(View.VISIBLE);
+                    loadImage(this, path, ivdegree_2);
+                }else if(i==2){
+                    ivdegree_3.setVisibility(View.VISIBLE);
+                    loadImage(this, path, ivdegree_3);
+                }
+            }
+        }
+
 
     }
 

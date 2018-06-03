@@ -4,6 +4,8 @@ package com.trafficticketbuddy.lawyer.model.login;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Response {
     @SerializedName("id")
     @Expose
@@ -63,9 +65,21 @@ public class Response {
     @SerializedName("city")
     @Expose
     private String city;
+    @SerializedName("degree_images")
+    @Expose
+    private List<DegreeImage> degreeImages = null;
+
 
     public String getId() {
         return id;
+    }
+
+    public List<DegreeImage> getDegreeImages() {
+        return degreeImages;
+    }
+
+    public void setDegreeImages(List<DegreeImage> degreeImages) {
+        this.degreeImages = degreeImages;
     }
 
     public void setId(String id) {

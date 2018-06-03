@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/scrollView"
-            app:layout_behavior="com.trafficticketbuddy.client.custom_views.WhatsappHeaderBehavior" />
+            app:layout_behavior="com.trafficticketbuddy.lawyer.custom_views.WhatsappHeaderBehavior" />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scrollView"
