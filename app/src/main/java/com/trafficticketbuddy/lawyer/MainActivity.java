@@ -1,5 +1,6 @@
 package com.trafficticketbuddy.lawyer;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,6 +64,7 @@ public class MainActivity extends BaseActivity {
     private  ViewPager mPager;
 
     public static List<com.trafficticketbuddy.lawyer.model.homeBanner.Response> bannerList=new ArrayList<>();
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class MainActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Home");
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -89,6 +92,7 @@ public class MainActivity extends BaseActivity {
         tvName=(TextView)findViewById(R.id.tvName);
         tvEmail=(TextView)findViewById(R.id.tvEmail);
         profile_image=(ImageView)findViewById(R.id.profile_image);
+
         linMyProfile.setOnClickListener(this);
         linSettings.setOnClickListener(this);
         //linFileCase.setOnClickListener(this);
@@ -121,11 +125,27 @@ public class MainActivity extends BaseActivity {
         super.onClick(view);
         closeDrawer();
         switch (view.getId()){
-            case R.id.linMyProfile:
+            case R.id.linHome:
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+                break;
+                case R.id.linMyProfile:
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
                 startActivity(new Intent(MainActivity.this,MyProfileActivity.class));
                 break;
                 case R.id.linSettings:
+                    if (drawer.isDrawerOpen(GravityCompat.START)) {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
                 startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                break;
+                case R.id.linShare:
+                    if (drawer.isDrawerOpen(GravityCompat.START)) {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
                 break;
 //                case R.id.linFileCase:
 //                startActivity(new Intent(MainActivity.this,FileCaseActivity.class));
@@ -134,11 +154,18 @@ public class MainActivity extends BaseActivity {
 //                startActivity(new Intent(MainActivity.this,MyCaseActivity.class));
 //                break;
                 case R.id.linMyCase_drawer:
+                    if (drawer.isDrawerOpen(GravityCompat.START)) {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
                 startActivity(new Intent(MainActivity.this,MyCaseActivity.class));
                 break;
                 case R.id.linLogout:
-                    preference.clearData();
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                    if (drawer.isDrawerOpen(GravityCompat.START)) {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+                    confirmLogoutDialog();
+                   /* preference.clearData();
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));*/
                 break;
 
         }
@@ -149,7 +176,7 @@ public class MainActivity extends BaseActivity {
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -298,5 +325,32 @@ public class MainActivity extends BaseActivity {
         map.put("lawyer_id",mLogin.getId());
         return map;
     }
+    void confirmLogoutDialog(){
+        final Dialog dialog=new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_logout);
+        dialog.setCancelable(false);
+        dialog.findViewById(R.id.tvCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
 
+            }
+        });
+        dialog.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                preference.clearData();
+                dialog.dismiss();
+                Intent in=new Intent(MainActivity.this,LoginActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(in);
+            }
+        });
+        dialog.show();
+
+    }
 }

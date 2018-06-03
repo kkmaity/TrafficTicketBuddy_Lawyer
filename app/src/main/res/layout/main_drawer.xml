@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -22,6 +23,7 @@
                 android:orientation="vertical"
                 >
                 <LinearLayout
+                    android:id="@+id/linHome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/_7sdp"
@@ -133,6 +135,34 @@
                         android:textSize="@dimen/_11sdp"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/linShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_7sdp"
+                    android:paddingBottom="@dimen/_7sdp"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_16sdp"
+                        app:srcCompat="@drawable/ic_share_white_24dp"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:text="Share App"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@color/pattens_blue"
+                        android:textSize="@dimen/_11sdp"/>
+                </LinearLayout>
+                <LinearLayout
                     android:id="@+id/linLogout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -171,17 +201,30 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:visibility="gone"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
         <View
             android:layout_width="match_parent"
             android:layout_height="0.4dp"
             android:background="@color/pattens_blue1"></View>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_12sdp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato_regular"
+            android:padding="@dimen/_16sdp"
+            android:drawableLeft="@drawable/ic_share_white_24dp"
+            android:drawablePadding="@dimen/_10sdp"
+            android:text="Share your app "/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_6sdp"
+            android:visibility="gone"
 
             android:layout_marginBottom="@dimen/_6sdp"
             android:layout_marginLeft="@dimen/_4sdp"
@@ -226,8 +269,6 @@
                 android:layout_weight="1"
                 android:src="@drawable/if_linkedin_circle"/>
         </LinearLayout>
-
-
 
     </LinearLayout>
 
