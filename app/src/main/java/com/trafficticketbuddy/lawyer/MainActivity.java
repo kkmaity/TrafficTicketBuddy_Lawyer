@@ -2,7 +2,6 @@ package com.trafficticketbuddy.lawyer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,7 +21,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
-import com.trafficticketbuddy.lawyer.adapter.AllCasesRecyclerAdapter;
+import com.trafficticketbuddy.lawyer.adapter.MadeBidRecyclerAdapter;
+import com.trafficticketbuddy.lawyer.apis.ApiFetchAllCases;
 import com.trafficticketbuddy.lawyer.apis.ApiGetAllCases;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 
@@ -32,22 +32,17 @@ import com.trafficticketbuddy.lawyer.apis.ApiHomeBanner;
 import com.trafficticketbuddy.lawyer.fragement.AutoScrollPagerFragment;
 import com.trafficticketbuddy.lawyer.fragement.TextFragment;
 import com.trafficticketbuddy.lawyer.model.cases.GetAllCasesMain;
+import com.trafficticketbuddy.lawyer.model.fetchCase.FetchCasesMain;
 import com.trafficticketbuddy.lawyer.model.homeBanner.HomeBannerMain;
 
 import com.trafficticketbuddy.lawyer.model.login.Response;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
-import com.trafficticketbuddy.lawyer.adapter.MyAdapter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends BaseActivity {
 
@@ -62,8 +57,8 @@ public class MainActivity extends BaseActivity {
     private RecyclerView rvRecycler;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager mLayoutManager;
-    private List<com.trafficticketbuddy.lawyer.model.cases.Response> caseListData = new ArrayList<>();
-    private AllCasesRecyclerAdapter mAllCasesRecyclerAdapter;
+    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData = new ArrayList<>();
+    private MadeBidRecyclerAdapter mAllCasesRecyclerAdapter;
     private  ViewPager mPager;
 
     public static List<com.trafficticketbuddy.lawyer.model.homeBanner.Response> bannerList=new ArrayList<>();
@@ -72,6 +67,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Gson gson = new Gson();
+        String json = preference.getString("login_user", "");
+        mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Home");
@@ -109,7 +107,7 @@ public class MainActivity extends BaseActivity {
         mLayoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRecycler.setLayoutManager(mLayoutManager);
         setAdapterRecyclerView();
-
+        fetchAllCases();
 
     }
 
@@ -172,9 +170,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        Gson gson = new Gson();
-        String json = preference.getString("login_user", "");
-        mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
+
         if(mLogin!=null) {
             if (mLogin.getFirstName() != null && mLogin.getLastName() != null) {
                 tvName.setText(mLogin.getFirstName() + " " + mLogin.getLastName());
@@ -197,10 +193,10 @@ public class MainActivity extends BaseActivity {
         return true;
     }*/
     private void setAdapterRecyclerView() {
+       /* caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());
         caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());
-        caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());
-        caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());
-        mAllCasesRecyclerAdapter = new AllCasesRecyclerAdapter(this, caseListData, new ItemClickListner() {
+        caseListData.add(new com.trafficticketbuddy.lawyer.model.cases.Response());*/
+        mAllCasesRecyclerAdapter = new MadeBidRecyclerAdapter(this, caseListData, new ItemClickListner() {
             @Override
             public void onItemClick(Object viewID, int position) {
                 switch (position) {
@@ -212,6 +208,46 @@ public class MainActivity extends BaseActivity {
         });
         rvRecycler.setAdapter(mAllCasesRecyclerAdapter);
     }
+
+
+    void fetchAllCases(){
+        if (isNetworkConnected()){
+
+
+            showProgressDialog();
+       new ApiFetchAllCases(getParams(), new OnApiResponseListener() {
+           @Override
+           public <E> void onSuccess(E t) {
+               caseListData.clear();
+               dismissProgressDialog();
+               FetchCasesMain main=(FetchCasesMain)t;
+               if (main.getStatus()){
+                   caseListData.addAll(main.getResponse());
+                   mAllCasesRecyclerAdapter.notifyDataSetChanged();
+
+               }
+
+           }
+
+           @Override
+           public <E> void onError(E t) {
+               dismissProgressDialog();
+           }
+
+           @Override
+           public void onError() {
+               dismissProgressDialog();
+           }
+       });
+        }
+    }
+
+    private Map<String, String> getParams() {
+        Map<String,String> map=new HashMap<>();
+        map.put("lawyer_id",mLogin.getId());
+        return map;
+    }
+
     void getallBanner(){
         if (isNetworkConnected()){
             showProgressDialog();
@@ -255,33 +291,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void getAllCase() {
-        if (isNetworkConnected()){
-            showProgressDialog();
-            new ApiGetAllCases(setParam(), new OnApiResponseListener() {
-                @Override
-                public <E> void onSuccess(E t) {
-                    caseListData.clear();
-                    dismissProgressDialog();
-                    GetAllCasesMain main=(GetAllCasesMain)t;
-                    if (main.getStatus()){
-                        caseListData.addAll(main.getResponse());
-                        mAllCasesRecyclerAdapter.notifyDataSetChanged();
-                    }
-                }
-                @Override
-                public <E> void onError(E t) {
-                    dismissProgressDialog();
-
-                }
-                @Override
-                public void onError() {
-                    dismissProgressDialog();
-
-                }
-            });
-        }
-    }
 
     private Map<String, String> setParam() {
         Map<String,String>map=new HashMap<>();

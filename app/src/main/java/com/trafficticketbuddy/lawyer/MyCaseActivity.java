@@ -3,16 +3,18 @@ package com.trafficticketbuddy.lawyer;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.google.gson.Gson;
 import com.trafficticketbuddy.lawyer.adapter.MyCaseAdapter;
 import com.trafficticketbuddy.lawyer.apis.ApiGetAllCases;
-import com.trafficticketbuddy.lawyer.fragement.AllCasesFragment;
-import com.trafficticketbuddy.lawyer.fragement.OpenCaseFragment;
-import com.trafficticketbuddy.lawyer.interfaces.MyCaseAllCaseDataLoaded;
-import com.trafficticketbuddy.lawyer.interfaces.MyCaseOpenCaseDataLoaded;
+import com.trafficticketbuddy.lawyer.fragement.MadeBidFragment;
+import com.trafficticketbuddy.lawyer.fragement.AcceptedCaseFragment;
+import com.trafficticketbuddy.lawyer.interfaces.MadeBidCaseDataLoaded;
+import com.trafficticketbuddy.lawyer.interfaces.AcceptedCaseDataLoaded;
 import com.trafficticketbuddy.lawyer.model.cases.GetAllCasesMain;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 
@@ -34,8 +36,9 @@ public class MyCaseActivity extends BaseActivity {
     private final int NOTIFICATION_ACCESS = 102;
     private TextView tvHeading;
     private com.trafficticketbuddy.lawyer.model.login.Response mLogin;
-    private MyCaseAllCaseDataLoaded allcaselistener;
-    private MyCaseOpenCaseDataLoaded opencaselistener;
+    private MadeBidCaseDataLoaded allcaselistener;
+    private AcceptedCaseDataLoaded opencaselistener;
+    private ImageView back;
 
 
     @Override
@@ -46,13 +49,15 @@ public class MyCaseActivity extends BaseActivity {
         String json = preference.getString("login_user", "");
         mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
         viewPager = (ViewPager) findViewById(R.id.id_viewpager);
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(this);
         mMyCaseAdapter = new MyCaseAdapter(getSupportFragmentManager());
 
-        OpenCaseFragment mOpenCaseFragment= new OpenCaseFragment();
-        mMyCaseAdapter.addFragment(mOpenCaseFragment, "Open Cases");
+        AcceptedCaseFragment mOpenCaseFragment= new AcceptedCaseFragment();
+        mMyCaseAdapter.addFragment(mOpenCaseFragment, "Accepted");
 
-        AllCasesFragment mAllCaseFragment = new AllCasesFragment();
-        mMyCaseAdapter.addFragment(mAllCaseFragment, "All Cases");
+        MadeBidFragment mAllCaseFragment = new MadeBidFragment();
+        mMyCaseAdapter.addFragment(mAllCaseFragment, "Made Bid");
 
         viewPager.setAdapter(mMyCaseAdapter);
         tabLayout = (TabLayout) findViewById(R.id.id_tabs);
@@ -77,50 +82,27 @@ public class MyCaseActivity extends BaseActivity {
 
             }
         });
-        getAllCase();
-    }
-
-    private void getAllCase() {
-        if (isNetworkConnected()){
-            showProgressDialog();
-            new ApiGetAllCases(setParam(), new OnApiResponseListener() {
-                @Override
-                public <E> void onSuccess(E t) {
-                    caseListData.clear();
-                    dismissProgressDialog();
-                    GetAllCasesMain main=(GetAllCasesMain)t;
-                    if (main.getStatus()){
-                        caseListData.addAll(main.getResponse());
-                        allcaselistener.allCaseDataLoaded(caseListData);
-                        opencaselistener.openCaseDataLoaded(caseListData);
-                    }
-                }
-                @Override
-                public <E> void onError(E t) {
-                    dismissProgressDialog();
-
-                }
-                @Override
-                public void onError() {
-                    dismissProgressDialog();
-
-                }
-            });
-        }
-    }
-
-    private Map<String, String> setParam() {
-        Map<String,String>map=new HashMap<>();
-        map.put("user_id",mLogin.getId());
-        return map;
     }
 
 
-    public void setMyCaseAllCaseListener(MyCaseAllCaseDataLoaded listener) {
+
+
+
+    public void setMyCaseAllCaseListener(MadeBidCaseDataLoaded listener) {
         this.allcaselistener = listener;
     }
 
-    public void setMyCaseOpenCaseListener(MyCaseOpenCaseDataLoaded listener) {
+    public void setMyCaseOpenCaseListener(AcceptedCaseDataLoaded listener) {
         this.opencaselistener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        switch (view.getId()){
+            case R.id.back:
+                finish();
+                break;
+        }
     }
 }

@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OpenCasesRecyclerAdapter extends RecyclerView.Adapter<OpenCasesRecyclerAdapter.MyViewHolder> {
+public class AcceptedCasesRecyclerAdapter extends RecyclerView.Adapter<AcceptedCasesRecyclerAdapter.MyViewHolder> {
 
     private Context mContext;
     private ItemClickListner _interface;
-    private List<Response> dataList=new ArrayList<>();
+    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> dataList=new ArrayList<>();
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linOpenCase;
         ImageView ivLicense,ivBackImage,ivFontImage;
@@ -43,7 +43,7 @@ public class OpenCasesRecyclerAdapter extends RecyclerView.Adapter<OpenCasesRecy
     }
 
 
-    public OpenCasesRecyclerAdapter(Context mContext, List<Response> caseListData, ItemClickListner clickHandler) {
+    public AcceptedCasesRecyclerAdapter(Context mContext, List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData, ItemClickListner clickHandler) {
         this.mContext=mContext;
         this.dataList=caseListData;
         this._interface = clickHandler;
@@ -52,14 +52,14 @@ public class OpenCasesRecyclerAdapter extends RecyclerView.Adapter<OpenCasesRecy
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_opencases, parent, false);
+                .inflate(R.layout.row_accepted_case, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
+       /* Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
                 .thumbnail(0.5f)
                 .into(holder.ivLicense);
         Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseFrontImg())
@@ -78,10 +78,10 @@ public class OpenCasesRecyclerAdapter extends RecyclerView.Adapter<OpenCasesRecy
                 Object objects = v.getTag();
                 _interface.onItemClick(objects,v.getId());
             }
-        });
+        });*/
     }
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return /*dataList.size()*/10;
     }
 }

@@ -1,6 +1,7 @@
 package com.trafficticketbuddy.lawyer.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +11,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.trafficticketbuddy.lawyer.BaseActivity;
 import com.trafficticketbuddy.lawyer.R;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
-import com.trafficticketbuddy.lawyer.model.cases.Response;
+import com.trafficticketbuddy.lawyer.model.fetchCase.Response;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class AllCasesRecyclerAdapter extends RecyclerView.Adapter<AllCasesRecyclerAdapter.MyViewHolder> {
-
+public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecyclerAdapter.MyViewHolder> {
     private Context mContext;
     private ItemClickListner _interface;
     private List<Response> dataList=new ArrayList<>();
@@ -45,10 +49,11 @@ public class AllCasesRecyclerAdapter extends RecyclerView.Adapter<AllCasesRecycl
     }
 
 
-    public AllCasesRecyclerAdapter(Context mContext, List<Response> caseListData, ItemClickListner clickHandler) {
+    public MadeBidRecyclerAdapter(Context mContext, List<Response> caseListData, ItemClickListner clickHandler) {
         this.mContext=mContext;
         this.dataList=caseListData;
         this._interface = clickHandler;
+
     }
 
     @Override
@@ -63,21 +68,26 @@ public class AllCasesRecyclerAdapter extends RecyclerView.Adapter<AllCasesRecycl
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-//        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
-//                .thumbnail(0.5f)
-//                .into(holder.ivLicense);
-//        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseFrontImg())
-//                .thumbnail(0.5f)
-//                .into(holder.ivFontImage);
-//        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseRearImg())
-//                .thumbnail(0.5f)
-//                .into(holder.ivBackImage);
-//        holder.tvCaseno.setText(dataList.get(position).getCaseNumber());
-//        holder.tvStateCity.setText(dataList.get(position).getState()+" "+dataList.get(position).getCity());
-//        holder.tvDesc.setText(dataList.get(position).getCaseDetails());
-        // holder.tvDate.setText("");
-        //holder.tvTime.setText("");
-        //holder.tvBidCount.setText("");
+      /*  Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getDrivingLicense())
+                .thumbnail(0.5f)
+                .into(holder.ivLicense);
+        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseFrontImg())
+                .thumbnail(0.5f)
+                .into(holder.ivFontImage);
+        Glide.with(mContext).load(Constant.BASE_URL+dataList.get(position).getCaseRearImg())
+                .thumbnail(0.5f)
+                .into(holder.ivBackImage);*/
+        ImageLoader.getInstance().displayImage(Constant.BASE_URL+dataList.get(position).getDrivingLicense(), holder.ivLicense, BaseActivity.cacheOptions);
+        ImageLoader.getInstance().displayImage(Constant.BASE_URL+dataList.get(position).getCaseFrontImg(), holder.ivFontImage, BaseActivity.cacheOptions);
+        ImageLoader.getInstance().displayImage(Constant.BASE_URL+dataList.get(position).getCaseRearImg(), holder.ivBackImage, BaseActivity.cacheOptions);
+
+        String[] splited = dataList.get(position).getCreatedAt().split("\\s+");
+        holder.tvCaseno.setText(dataList.get(position).getCaseNumber());
+        holder.tvStateCity.setText(dataList.get(position).getState()+" "+dataList.get(position).getCity());
+        holder.tvDesc.setText(dataList.get(position).getCaseDetails());
+         holder.tvDate.setText(""+splited[0]);
+        holder.tvTime.setText(""+splited[1]);
+        holder.tvBidCount.setText(""+dataList.get(position).getBidCount());
         holder.linAllCase.setTag(position);
         holder.linAllCase.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,6 +3,7 @@ package com.trafficticketbuddy.lawyer.fragement;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,28 +11,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trafficticketbuddy.lawyer.MyBidActivity;
+import com.trafficticketbuddy.lawyer.CaseDetailsActivity;
 import com.trafficticketbuddy.lawyer.MyCaseActivity;
 import com.trafficticketbuddy.lawyer.R;
-import com.trafficticketbuddy.lawyer.adapter.AllCasesRecyclerAdapter;
+import com.trafficticketbuddy.lawyer.adapter.AcceptedCasesRecyclerAdapter;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
-import com.trafficticketbuddy.lawyer.interfaces.MyCaseAllCaseDataLoaded;
+import com.trafficticketbuddy.lawyer.interfaces.AcceptedCaseDataLoaded;
 import com.trafficticketbuddy.lawyer.model.cases.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllCasesFragment extends BaseFragment implements MyCaseAllCaseDataLoaded {
+public class AcceptedCaseFragment extends BaseFragment implements AcceptedCaseDataLoaded {
     private RecyclerView rvRecycler;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager mLayoutManager;
-    private List<Response> caseListData = new ArrayList<>();
-    private AllCasesRecyclerAdapter mAllCasesRecyclerAdapter;
+    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_allcases, container, false);
+        View view= inflater.inflate(R.layout.fragment_opencase, container, false);
         initialize(view);
         return view;
     }
@@ -43,28 +43,33 @@ public class AllCasesFragment extends BaseFragment implements MyCaseAllCaseDataL
         mLayoutManager= new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvRecycler.setLayoutManager(mLayoutManager);
         MyCaseActivity mActivity = (MyCaseActivity) getActivity();
-        mActivity.setMyCaseAllCaseListener(this);
+        mActivity.setMyCaseOpenCaseListener(this);
         setAdapterRecyclerView();
-
     }
     private void setAdapterRecyclerView() {
-         mAllCasesRecyclerAdapter=new AllCasesRecyclerAdapter(baseActivity, caseListData, new ItemClickListner() {
+        AcceptedCasesRecyclerAdapter mAcceptedCasesRecyclerAdapter =new AcceptedCasesRecyclerAdapter(baseActivity, caseListData, new ItemClickListner() {
             @Override
             public void onItemClick(Object viewID, int position) {
                 switch (position){
-                    case R.id.linAllCase:
-                        startActivity(new Intent(getActivity(),MyBidActivity.class));
+                    case R.id.linOpenCase:
+                       /* Intent mIntent = new Intent(getActivity(),CaseDetailsActivity.class);
+                        mIntent.putExtra("data",caseListData.get(Integer.parseInt(String.valueOf(viewID))));
+                        startActivity(mIntent);*/
                         break;
                 }
             }
         });
-        rvRecycler.setAdapter(mAllCasesRecyclerAdapter);
+        rvRecycler.setAdapter(mAcceptedCasesRecyclerAdapter);
     }
 
     @Override
-    public void allCaseDataLoaded(List<Response> caseListData) {
+    public void acceptedCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData) {
         this.caseListData.clear();
-        this.caseListData=caseListData;
+        for (com.trafficticketbuddy.lawyer.model.fetchCase.Response mResponse:caseListData) {
+            if(!mResponse.getStatus().equalsIgnoreCase("COMPLETED")){
+                this.caseListData.add(mResponse);
+            }
+        }
         setAdapterRecyclerView();
     }
 }

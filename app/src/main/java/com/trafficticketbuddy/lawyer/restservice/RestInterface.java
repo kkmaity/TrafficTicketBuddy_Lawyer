@@ -4,6 +4,7 @@ import com.trafficticketbuddy.lawyer.model.StateNameMain;
 import com.trafficticketbuddy.lawyer.model.cases.GetAllCasesMain;
 import com.trafficticketbuddy.lawyer.model.city.CityMain;
 import com.trafficticketbuddy.lawyer.model.country.CountryMain;
+import com.trafficticketbuddy.lawyer.model.fetchCase.FetchCasesMain;
 import com.trafficticketbuddy.lawyer.model.homeBanner.HomeBannerMain;
 import com.trafficticketbuddy.lawyer.model.login.LoginMain;
 import com.trafficticketbuddy.lawyer.utils.Constant;
@@ -96,6 +97,12 @@ public interface RestInterface {
          @Part MultipartBody.Part files1,
          @Part MultipartBody.Part files2,
          @Part MultipartBody.Part files3);
+
+
+ //http://13.58.150.208/buddy/index.php/api/v1/user/fetchCasesOflawyer
+         @FormUrlEncoded
+         @POST("api/v1/user/fetchCasesOflawyer")
+                 Call<FetchCasesMain> fetchCasesOflawyer(@FieldMap Map<String,String> params);
 
    /* @POST("emp_track/api/userRegister.php")
     Call<RegistrationMain> userRegister(@Body ApiRegistrationParam params);

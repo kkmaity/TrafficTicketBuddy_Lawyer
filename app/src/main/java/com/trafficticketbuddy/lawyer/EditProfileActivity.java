@@ -24,6 +24,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -121,6 +122,15 @@ public class EditProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         ivProfileImage = (ImageView)findViewById(R.id.ivProfileImage);
        // ivLicense = (ImageView)findViewById(R.id.ivLicense);
 

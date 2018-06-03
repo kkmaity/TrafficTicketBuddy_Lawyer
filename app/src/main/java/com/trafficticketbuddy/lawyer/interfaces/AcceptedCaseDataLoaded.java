@@ -8,6 +8,6 @@ import java.util.List;
  * Created by User on 26-05-2018.
  */
 
-public interface MyCaseAllCaseDataLoaded {
-    public void allCaseDataLoaded(List<Response> caseListData);
+public interface AcceptedCaseDataLoaded {
+    public void acceptedCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData);
 }
