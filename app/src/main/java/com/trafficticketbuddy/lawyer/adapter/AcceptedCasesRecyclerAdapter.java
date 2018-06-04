@@ -9,11 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.trafficticketbuddy.lawyer.R;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
-import com.trafficticketbuddy.lawyer.model.cases.Response;
-import com.trafficticketbuddy.lawyer.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ public class AcceptedCasesRecyclerAdapter extends RecyclerView.Adapter<AcceptedC
 
     private Context mContext;
     private ItemClickListner _interface;
-    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> dataList=new ArrayList<>();
+    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> dataList=new ArrayList<>();
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linOpenCase;
         ImageView ivLicense,ivBackImage,ivFontImage;
@@ -43,7 +40,7 @@ public class AcceptedCasesRecyclerAdapter extends RecyclerView.Adapter<AcceptedC
     }
 
 
-    public AcceptedCasesRecyclerAdapter(Context mContext, List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData, ItemClickListner clickHandler) {
+    public AcceptedCasesRecyclerAdapter(Context mContext, List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData, ItemClickListner clickHandler) {
         this.mContext=mContext;
         this.dataList=caseListData;
         this._interface = clickHandler;

@@ -81,6 +81,12 @@ public interface RestInterface {
     @POST("api/v1/user/fetchCasesOflawyer")
     Call<GetAllCasesMain> getAllCases(@FieldMap Map<String,String> params);
 
+
+
+   @FormUrlEncoded
+    @POST("api/v1/user/placebid")
+    Call<ResponseBody> submitBid(@FieldMap Map<String,String> params);
+
  @POST("api/v1/user/banners")
  Call<HomeBannerMain> banners();
 

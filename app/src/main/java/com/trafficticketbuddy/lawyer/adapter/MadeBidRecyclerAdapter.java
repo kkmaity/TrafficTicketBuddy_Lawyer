@@ -1,7 +1,6 @@
 package com.trafficticketbuddy.lawyer.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.trafficticketbuddy.lawyer.BaseActivity;
 import com.trafficticketbuddy.lawyer.R;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
@@ -27,7 +23,7 @@ import java.util.List;
 public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecyclerAdapter.MyViewHolder> {
     private Context mContext;
     private ItemClickListner _interface;
-    private List<Response> dataList=new ArrayList<>();
+    private List<Response<R>> dataList=new ArrayList<>();
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linAllCase;
         ImageView ivLicense,ivBackImage,ivFontImage;
@@ -49,7 +45,7 @@ public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecycler
     }
 
 
-    public MadeBidRecyclerAdapter(Context mContext, List<Response> caseListData, ItemClickListner clickHandler) {
+    public MadeBidRecyclerAdapter(Context mContext, List<Response<R>> caseListData, ItemClickListner clickHandler) {
         this.mContext=mContext;
         this.dataList=caseListData;
         this._interface = clickHandler;

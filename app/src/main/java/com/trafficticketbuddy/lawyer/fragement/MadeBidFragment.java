@@ -16,7 +16,6 @@ import com.trafficticketbuddy.lawyer.R;
 import com.trafficticketbuddy.lawyer.adapter.MadeBidRecyclerAdapter;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 import com.trafficticketbuddy.lawyer.interfaces.MadeBidCaseDataLoaded;
-import com.trafficticketbuddy.lawyer.model.cases.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class MadeBidFragment extends BaseFragment implements MadeBidCaseDataLoad
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager mLayoutManager;
     private MadeBidRecyclerAdapter mAllCasesRecyclerAdapter;
-    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData=new ArrayList<>();
+    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +62,7 @@ public class MadeBidFragment extends BaseFragment implements MadeBidCaseDataLoad
     }
 
     @Override
-    public void madeBidCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData) {
+    public void madeBidCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData) {
         this.caseListData.clear();
         this.caseListData=caseListData;
         setAdapterRecyclerView();

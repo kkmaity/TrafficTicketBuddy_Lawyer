@@ -25,7 +25,6 @@ import com.google.gson.Gson;
 
 import com.trafficticketbuddy.lawyer.adapter.MadeBidRecyclerAdapter;
 import com.trafficticketbuddy.lawyer.apis.ApiFetchAllCases;
-import com.trafficticketbuddy.lawyer.apis.ApiGetAllCases;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -33,7 +32,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.trafficticketbuddy.lawyer.apis.ApiHomeBanner;
 import com.trafficticketbuddy.lawyer.fragement.AutoScrollPagerFragment;
 import com.trafficticketbuddy.lawyer.fragement.TextFragment;
-import com.trafficticketbuddy.lawyer.model.cases.GetAllCasesMain;
 import com.trafficticketbuddy.lawyer.model.fetchCase.FetchCasesMain;
 import com.trafficticketbuddy.lawyer.model.homeBanner.HomeBannerMain;
 
@@ -59,7 +57,7 @@ public class MainActivity extends BaseActivity {
     private RecyclerView rvRecycler;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager mLayoutManager;
-    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData = new ArrayList<>();
+    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData = new ArrayList<>();
     private MadeBidRecyclerAdapter mAllCasesRecyclerAdapter;
     private  ViewPager mPager;
 
@@ -229,7 +227,9 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(Object viewID, int position) {
                 switch (position) {
                     case R.id.linAllCase:
-
+                        Intent mIntent = new Intent(MainActivity.this,CaseDetailsActivity.class);
+                        mIntent.putExtra("data",caseListData.get(Integer.parseInt(String.valueOf(viewID))));
+                        startActivity(mIntent);
                         break;
                 }
             }

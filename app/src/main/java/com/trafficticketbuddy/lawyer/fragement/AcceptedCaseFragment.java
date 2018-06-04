@@ -1,7 +1,6 @@
 package com.trafficticketbuddy.lawyer.fragement;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,13 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trafficticketbuddy.lawyer.CaseDetailsActivity;
 import com.trafficticketbuddy.lawyer.MyCaseActivity;
 import com.trafficticketbuddy.lawyer.R;
 import com.trafficticketbuddy.lawyer.adapter.AcceptedCasesRecyclerAdapter;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 import com.trafficticketbuddy.lawyer.interfaces.AcceptedCaseDataLoaded;
-import com.trafficticketbuddy.lawyer.model.cases.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +23,7 @@ public class AcceptedCaseFragment extends BaseFragment implements AcceptedCaseDa
     private RecyclerView rvRecycler;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager mLayoutManager;
-    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData = new ArrayList<>();
+    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,9 +60,9 @@ public class AcceptedCaseFragment extends BaseFragment implements AcceptedCaseDa
     }
 
     @Override
-    public void acceptedCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData) {
+    public void acceptedCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData) {
         this.caseListData.clear();
-        for (com.trafficticketbuddy.lawyer.model.fetchCase.Response mResponse:caseListData) {
+        for (com.trafficticketbuddy.lawyer.model.fetchCase.Response<R> mResponse:caseListData) {
             if(!mResponse.getStatus().equalsIgnoreCase("COMPLETED")){
                 this.caseListData.add(mResponse);
             }

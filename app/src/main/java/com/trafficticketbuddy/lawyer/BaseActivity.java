@@ -42,11 +42,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.trafficticketbuddy.lawyer.interfaces.FbLoginCompleted;
 import com.trafficticketbuddy.lawyer.interfaces.GoogleLoginCompleted;
-import com.trafficticketbuddy.lawyer.model.cases.Response;
 import com.trafficticketbuddy.lawyer.preferences.Preference;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
@@ -75,7 +73,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     private CallbackManager callbackManager;
     private FbLoginCompleted mFbLoginCompleted;
     private GoogleLoginCompleted mGoogleLoginCompleted;
-    public  static final List<com.trafficticketbuddy.lawyer.model.fetchCase.Response> caseListData=new ArrayList<>();
+    public  static final List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData=new ArrayList<>();
     public static DisplayImageOptions cacheOptions;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -2,6 +2,7 @@ package com.trafficticketbuddy.lawyer.model.fetchCase;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.trafficticketbuddy.lawyer.R;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class FetchCasesMain {
     private Boolean status;
     @SerializedName("response")
     @Expose
-    private List<Response> response = null;
+    private List<Response<R>> response = null;
     @SerializedName("message")
     @Expose
     private String message;
@@ -24,11 +25,11 @@ public class FetchCasesMain {
         this.status = status;
     }
 
-    public List<Response> getResponse() {
+    public List<Response<R>> getResponse() {
         return response;
     }
 
-    public void setResponse(List<Response> response) {
+    public void setResponse(List<Response<R>> response) {
         this.response = response;
     }
 
