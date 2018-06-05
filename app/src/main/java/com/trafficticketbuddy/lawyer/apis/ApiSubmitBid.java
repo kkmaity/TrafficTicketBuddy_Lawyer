@@ -1,5 +1,6 @@
 package com.trafficticketbuddy.lawyer.apis;
 
+import com.trafficticketbuddy.lawyer.model.placebid.PlaceBidMain;
 import com.trafficticketbuddy.lawyer.restservice.APIHelper;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.restservice.RestService;
@@ -28,18 +29,18 @@ public class ApiSubmitBid {
 
     public void doWebServiceCall() {
 
-        Call<ResponseBody> data = RestService.getInstance().restInterface.submitBid(param);
-        APIHelper.enqueueWithRetry(data, new Callback<ResponseBody>() {
+        Call<PlaceBidMain> data = RestService.getInstance().restInterface.submitBid(param);
+        APIHelper.enqueueWithRetry(data, new Callback<PlaceBidMain>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<PlaceBidMain> call, Response<PlaceBidMain> response) {
                 if(response.code() == 200 && response !=null){
-                    listener.onSuccess(response);
+                    listener.onSuccess(response.body());
                 }else{
                     listener.onError();
                 }
             }
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<PlaceBidMain> call, Throwable t) {
                 listener.onError();
             }
         });

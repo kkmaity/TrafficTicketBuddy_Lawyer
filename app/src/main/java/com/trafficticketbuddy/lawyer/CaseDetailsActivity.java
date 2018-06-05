@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.trafficticketbuddy.lawyer.apis.ApiSubmitBid;
 import com.trafficticketbuddy.lawyer.model.fetchCase.Response;
+import com.trafficticketbuddy.lawyer.model.placebid.PlaceBidMain;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 
 import org.json.JSONException;
@@ -98,16 +99,16 @@ public class CaseDetailsActivity extends BaseActivity {
             public <E> void onSuccess(E t) {
                 {
                     dismissProgressDialog();
+
                     try {
-                        retrofit2.Response<ResponseBody> res= (retrofit2.Response<ResponseBody>) t;
-                        JSONObject object=new JSONObject(res.body().toString());
-                        if (object.getBoolean("status")){
-                            showDialog(object.getString("message"));
+                        PlaceBidMain mPlaceBidMain= (PlaceBidMain) t;
+                        if (mPlaceBidMain.getStatus()){
+                            showDialog(mPlaceBidMain.getMessage());
                             finish();
                         }
                         else
-                            showDialog(object.getString("message"));
-                    } catch (JSONException e) {
+                            showDialog(mPlaceBidMain.getMessage());
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

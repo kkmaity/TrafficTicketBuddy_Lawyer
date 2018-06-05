@@ -7,6 +7,7 @@ import com.trafficticketbuddy.lawyer.model.country.CountryMain;
 import com.trafficticketbuddy.lawyer.model.fetchCase.FetchCasesMain;
 import com.trafficticketbuddy.lawyer.model.homeBanner.HomeBannerMain;
 import com.trafficticketbuddy.lawyer.model.login.LoginMain;
+import com.trafficticketbuddy.lawyer.model.placebid.PlaceBidMain;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
 import java.util.Map;
@@ -85,7 +86,7 @@ public interface RestInterface {
 
    @FormUrlEncoded
     @POST("api/v1/user/placebid")
-    Call<ResponseBody> submitBid(@FieldMap Map<String,String> params);
+    Call<PlaceBidMain> submitBid(@FieldMap Map<String,String> params);
 
  @POST("api/v1/user/banners")
  Call<HomeBannerMain> banners();
