@@ -10,15 +10,22 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.trafficticketbuddy.lawyer.adapter.MyCaseAdapter;
+import com.trafficticketbuddy.lawyer.apis.AllBidApi;
+import com.trafficticketbuddy.lawyer.apis.ApiFetchAllCases;
 import com.trafficticketbuddy.lawyer.apis.ApiGetAllCases;
 import com.trafficticketbuddy.lawyer.fragement.MadeBidFragment;
 import com.trafficticketbuddy.lawyer.fragement.AcceptedCaseFragment;
 import com.trafficticketbuddy.lawyer.interfaces.MadeBidCaseDataLoaded;
 import com.trafficticketbuddy.lawyer.interfaces.AcceptedCaseDataLoaded;
+import com.trafficticketbuddy.lawyer.model.allbid.AllBidMain;
+import com.trafficticketbuddy.lawyer.model.allbid.Response;
 import com.trafficticketbuddy.lawyer.model.cases.GetAllCasesMain;
+import com.trafficticketbuddy.lawyer.model.fetchCase.FetchCasesMain;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -39,6 +46,7 @@ public class MyCaseActivity extends BaseActivity {
     private MadeBidCaseDataLoaded allcaselistener;
     private AcceptedCaseDataLoaded opencaselistener;
     private ImageView back;
+    public  static final List<Response> caseListData=new ArrayList<>();
 
 
     @Override
@@ -82,6 +90,8 @@ public class MyCaseActivity extends BaseActivity {
 
             }
         });
+
+        fetchAllBids();
     }
 
 
@@ -94,6 +104,41 @@ public class MyCaseActivity extends BaseActivity {
 
     public void setMyCaseOpenCaseListener(AcceptedCaseDataLoaded listener) {
         this.opencaselistener = listener;
+    }
+
+    void fetchAllBids(){
+        if (isNetworkConnected()){
+            showProgressDialog();
+            new AllBidApi(getParams(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    caseListData.clear();
+                    dismissProgressDialog();
+                    AllBidMain main=(AllBidMain)t;
+                    if (main.getStatus()){
+                        caseListData.addAll(main.getResponse());
+                        allcaselistener.madeBidCaseDataLoaded(caseListData);
+                        opencaselistener.acceptedCaseDataLoaded(caseListData);
+                    }
+                }
+
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
+    }
+
+    private Map<String, String> getParams() {
+        Map<String,String> map=new HashMap<>();
+        map.put("lawyer_id",mLogin.getId());
+        return map;
     }
 
     @Override

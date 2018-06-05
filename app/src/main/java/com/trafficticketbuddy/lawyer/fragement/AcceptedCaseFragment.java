@@ -15,6 +15,7 @@ import com.trafficticketbuddy.lawyer.R;
 import com.trafficticketbuddy.lawyer.adapter.AcceptedCasesRecyclerAdapter;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 import com.trafficticketbuddy.lawyer.interfaces.AcceptedCaseDataLoaded;
+import com.trafficticketbuddy.lawyer.model.allbid.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class AcceptedCaseFragment extends BaseFragment implements AcceptedCaseDa
     private RecyclerView rvRecycler;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager mLayoutManager;
-    private List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData = new ArrayList<>();
+    private List<Response> caseListData = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,10 +61,10 @@ public class AcceptedCaseFragment extends BaseFragment implements AcceptedCaseDa
     }
 
     @Override
-    public void acceptedCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData) {
+    public void acceptedCaseDataLoaded(List<Response> caseListData) {
         this.caseListData.clear();
-        for (com.trafficticketbuddy.lawyer.model.fetchCase.Response<R> mResponse:caseListData) {
-            if(!mResponse.getStatus().equalsIgnoreCase("COMPLETED")){
+        for (Response mResponse:caseListData) {
+            if(!mResponse.getIsAccepted().equalsIgnoreCase("1")){
                 this.caseListData.add(mResponse);
             }
         }

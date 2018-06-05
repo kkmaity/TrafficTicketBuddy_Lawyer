@@ -1,6 +1,7 @@
 package com.trafficticketbuddy.lawyer.interfaces;
 
 import com.trafficticketbuddy.lawyer.R;
+import com.trafficticketbuddy.lawyer.model.allbid.Response;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 
 public interface AcceptedCaseDataLoaded {
-    public void acceptedCaseDataLoaded(List<com.trafficticketbuddy.lawyer.model.fetchCase.Response<R>> caseListData);
+    public void acceptedCaseDataLoaded(List<Response> caseListData);
 }

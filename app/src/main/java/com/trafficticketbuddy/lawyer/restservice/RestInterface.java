@@ -1,6 +1,7 @@
 package com.trafficticketbuddy.lawyer.restservice;
 
 import com.trafficticketbuddy.lawyer.model.StateNameMain;
+import com.trafficticketbuddy.lawyer.model.allbid.AllBidMain;
 import com.trafficticketbuddy.lawyer.model.cases.GetAllCasesMain;
 import com.trafficticketbuddy.lawyer.model.city.CityMain;
 import com.trafficticketbuddy.lawyer.model.country.CountryMain;
@@ -25,68 +26,72 @@ import retrofit2.http.PartMap;
 
 public interface RestInterface {
 
-   // String BASE_URL = "http://13.58.150.208/buddy/";
-   String BASE_URL = Constant.BASE_URL;
+ // String BASE_URL = "http://13.58.150.208/buddy/";
+ String BASE_URL = Constant.BASE_URL;
 
-    @FormUrlEncoded
-    @POST("api/v1/user/register")
-    Call<ResponseBody> registrtion(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/register")
+ Call<ResponseBody> registrtion(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/login")
-    Call<LoginMain> login(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/login")
+ Call<LoginMain> login(@FieldMap Map<String,String> params);
 
-    @Multipart
-    @POST("api/v1/user/updateLawyerProfile")
-    Call<LoginMain> editprofile(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part profile_image,
-                                @Part MultipartBody.Part degree_image_1,@Part MultipartBody.Part degree_image_2,@Part MultipartBody.Part degree_image_3);
+ @Multipart
+ @POST("api/v1/user/updateLawyerProfile")
+ Call<LoginMain> editprofile(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part profile_image,
+                             @Part MultipartBody.Part degree_image_1,@Part MultipartBody.Part degree_image_2,@Part MultipartBody.Part degree_image_3);
 
-    @POST("api/v1/user/country")
-    Call<CountryMain> getCountry();
+ @POST("api/v1/user/country")
+ Call<CountryMain> getCountry();
 
-    @FormUrlEncoded
-    @POST("api/v1/user/states")
-    Call<StateNameMain> getStateName(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/states")
+ Call<StateNameMain> getStateName(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/cities")
-    Call<CityMain> getCityName(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/cities")
+ Call<CityMain> getCityName(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/resend_otp")
-    Call<ResponseBody> resend_otp(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/cities")
+ Call<AllBidMain> getAllBid(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/send_mail_otp")
-    Call<ResponseBody> send_mail_otp(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/resend_otp")
+ Call<ResponseBody> resend_otp(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/validate_otp")
-    Call<ResponseBody> validate_otp(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/send_mail_otp")
+ Call<ResponseBody> send_mail_otp(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/validate_email_otp")
-    Call<ResponseBody> validate_email_otp(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/validate_otp")
+ Call<ResponseBody> validate_otp(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/register_facebook")
-    Call<LoginMain> fblogin(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/validate_email_otp")
+ Call<ResponseBody> validate_email_otp(@FieldMap Map<String,String> params);
 
-    @FormUrlEncoded
-    @POST("api/v1/user/register_google")
-    Call<LoginMain> Googlelogin(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/register_facebook")
+ Call<LoginMain> fblogin(@FieldMap Map<String,String> params);
 
-
-
-   @FormUrlEncoded
-    @POST("api/v1/user/fetchCasesOflawyer")
-    Call<GetAllCasesMain> getAllCases(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/register_google")
+ Call<LoginMain> Googlelogin(@FieldMap Map<String,String> params);
 
 
 
-   @FormUrlEncoded
-    @POST("api/v1/user/placebid")
-    Call<PlaceBidMain> submitBid(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/fetchCasesOflawyer")
+ Call<GetAllCasesMain> getAllCases(@FieldMap Map<String,String> params);
+
+
+
+ @FormUrlEncoded
+ @POST("api/v1/user/placebid")
+ Call<PlaceBidMain> submitBid(@FieldMap Map<String,String> params);
 
  @POST("api/v1/user/banners")
  Call<HomeBannerMain> banners();
@@ -107,9 +112,9 @@ public interface RestInterface {
 
 
  //http://13.58.150.208/buddy/index.php/api/v1/user/fetchCasesOflawyer
-         @FormUrlEncoded
-         @POST("api/v1/user/fetchCasesOflawyer")
-                 Call<FetchCasesMain> fetchCasesOflawyer(@FieldMap Map<String,String> params);
+ @FormUrlEncoded
+ @POST("api/v1/user/fetchCasesOflawyer")
+ Call<FetchCasesMain> fetchCasesOflawyer(@FieldMap Map<String,String> params);
 
    /* @POST("emp_track/api/userRegister.php")
     Call<RegistrationMain> userRegister(@Body ApiRegistrationParam params);
