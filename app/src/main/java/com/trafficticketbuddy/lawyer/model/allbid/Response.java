@@ -30,21 +30,21 @@ public class Response {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("lawyer_first_name")
+    @SerializedName("client_first_name")
     @Expose
-    private String lawyerFirstName;
-    @SerializedName("lawyer_last_name")
+    private String clientFirstName;
+    @SerializedName("client_last_name")
     @Expose
-    private String lawyerLastName;
-    @SerializedName("lawyer_email")
+    private String clientLastName;
+    @SerializedName("client_email")
     @Expose
-    private String lawyerEmail;
-    @SerializedName("lawyer_phone")
+    private String clientEmail;
+    @SerializedName("client_phone")
     @Expose
-    private String lawyerPhone;
-    @SerializedName("lawyer_profile_image")
+    private String clientPhone;
+    @SerializedName("client_profile_image")
     @Expose
-    private String lawyerProfileImage;
+    private String clientProfileImage;
     @SerializedName("case_number")
     @Expose
     private String caseNumber;
@@ -134,44 +134,44 @@ public class Response {
         this.status = status;
     }
 
-    public String getLawyerFirstName() {
-        return lawyerFirstName;
+    public String getClientFirstName() {
+        return clientFirstName;
     }
 
-    public void setLawyerFirstName(String lawyerFirstName) {
-        this.lawyerFirstName = lawyerFirstName;
+    public void setClientFirstName(String clientFirstName) {
+        this.clientFirstName = clientFirstName;
     }
 
-    public String getLawyerLastName() {
-        return lawyerLastName;
+    public String getClientLastName() {
+        return clientLastName;
     }
 
-    public void setLawyerLastName(String lawyerLastName) {
-        this.lawyerLastName = lawyerLastName;
+    public void setClientLastName(String clientLastName) {
+        this.clientLastName = clientLastName;
     }
 
-    public String getLawyerEmail() {
-        return lawyerEmail;
+    public String getClientEmail() {
+        return clientEmail;
     }
 
-    public void setLawyerEmail(String lawyerEmail) {
-        this.lawyerEmail = lawyerEmail;
+    public void setClientEmail(String clientEmail) {
+        this.clientEmail = clientEmail;
     }
 
-    public String getLawyerPhone() {
-        return lawyerPhone;
+    public String getClientPhone() {
+        return clientPhone;
     }
 
-    public void setLawyerPhone(String lawyerPhone) {
-        this.lawyerPhone = lawyerPhone;
+    public void setClientPhone(String clientPhone) {
+        this.clientPhone = clientPhone;
     }
 
-    public String getLawyerProfileImage() {
-        return lawyerProfileImage;
+    public String getClientProfileImage() {
+        return clientProfileImage;
     }
 
-    public void setLawyerProfileImage(String lawyerProfileImage) {
-        this.lawyerProfileImage = lawyerProfileImage;
+    public void setClientProfileImage(String clientProfileImage) {
+        this.clientProfileImage = clientProfileImage;
     }
 
     public String getCaseNumber() {
