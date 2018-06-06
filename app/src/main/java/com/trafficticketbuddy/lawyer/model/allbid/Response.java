@@ -63,6 +63,30 @@ public class Response {
     @SerializedName("case_status")
     @Expose
     private String caseStatus;
+    @SerializedName("state")
+    @Expose
+    private String state;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @SerializedName("city")
+
+    @Expose
+    private String city;
     @SerializedName("case_created_at")
     @Expose
     private String caseCreatedAt;

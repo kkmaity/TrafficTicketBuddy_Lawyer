@@ -64,7 +64,7 @@ public class AcceptedCaseFragment extends BaseFragment implements AcceptedCaseDa
     public void acceptedCaseDataLoaded(List<Response> caseListData) {
         this.caseListData.clear();
         for (Response mResponse:caseListData) {
-            if(!mResponse.getIsAccepted().equalsIgnoreCase("1")){
+            if(mResponse.getIsAccepted().equalsIgnoreCase("1")){
                 this.caseListData.add(mResponse);
             }
         }
