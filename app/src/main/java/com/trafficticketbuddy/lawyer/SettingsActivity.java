@@ -2,6 +2,7 @@ package com.trafficticketbuddy.lawyer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,15 +20,20 @@ public class SettingsActivity extends BaseActivity {
         /*requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
   */      setContentView(R.layout.activity_settings);
-        tvHeading = (TextView)findViewById(R.id.tvHeading);
+
         linAboutUs = (LinearLayout)findViewById(R.id.linAboutUs);
         linCntactUs = (LinearLayout)findViewById(R.id.linCntactUs);
         linPrivacyPolicy = (LinearLayout)findViewById(R.id.linPrivacyPolicy);
         linTramsCondition = (LinearLayout)findViewById(R.id.linTramsCondition);
         linChangePAss = (LinearLayout)findViewById(R.id.linChangePAss);
-        tvHeading.setText("Settings");
-        back = (ImageView) findViewById(R.id.back);
-        back.setOnClickListener(this);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         linAboutUs.setOnClickListener(this);
         linTramsCondition.setOnClickListener(this);
         linCntactUs.setOnClickListener(this);
@@ -38,9 +44,6 @@ public class SettingsActivity extends BaseActivity {
     public void onClick(View view) {
         super.onClick(view);
         switch (view.getId()){
-            case R.id.back:
-                finish();
-                break;
                 case R.id.linAboutUs:
                     Intent intent=new Intent(SettingsActivity.this,AboutUsActivity.class);
                     intent.putExtra("key","About Us");

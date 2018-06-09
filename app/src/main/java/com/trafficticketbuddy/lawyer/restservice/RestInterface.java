@@ -54,8 +54,12 @@ public interface RestInterface {
  Call<CityMain> getCityName(@FieldMap Map<String,String> params);
 
  @FormUrlEncoded
- @POST("api/v1/user/cities")
+ @POST("api/v1/user/getBidsByLawyer")
  Call<AllBidMain> getAllBid(@FieldMap Map<String,String> params);
+
+ @FormUrlEncoded
+ @POST("api/v1/user/resetpassword")
+ Call<ResponseBody> resetpassword(@FieldMap Map<String,String> params);
 
  @FormUrlEncoded
  @POST("api/v1/user/resend_otp")

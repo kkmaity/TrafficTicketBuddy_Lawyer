@@ -1,5 +1,6 @@
 package com.trafficticketbuddy.lawyer;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ import com.trafficticketbuddy.lawyer.adapter.CountryBaseAdapter;
 import com.trafficticketbuddy.lawyer.adapter.StateBaseAdapter;
 import com.trafficticketbuddy.lawyer.apis.ApiCity;
 import com.trafficticketbuddy.lawyer.apis.ApiCountry;
+import com.trafficticketbuddy.lawyer.apis.ApiEmailsendOTP;
 import com.trafficticketbuddy.lawyer.apis.ApiRegistration;
 import com.trafficticketbuddy.lawyer.apis.ApiState;
 import com.trafficticketbuddy.lawyer.model.StateNameMain;
@@ -31,6 +34,7 @@ import com.trafficticketbuddy.lawyer.model.city.CityMain;
 import com.trafficticketbuddy.lawyer.model.city.CityResponse;
 import com.trafficticketbuddy.lawyer.model.country.CountryMain;
 import com.trafficticketbuddy.lawyer.model.country.Response;
+import com.trafficticketbuddy.lawyer.model.login.LoginMain;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
@@ -60,6 +64,7 @@ public class RegistrationActivity extends BaseActivity {
     private String nameCity="";
     private String countryID="1";
     private EditText etDegree;
+    private LoginMain mLoginMain;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -272,12 +277,23 @@ public class RegistrationActivity extends BaseActivity {
                     try {
                         JSONObject object=new JSONObject(res);
                         if (object.getBoolean("status")){
+                            mLoginMain = new Gson().fromJson(object.toString(),LoginMain.class);
                             preference.setUserId(""+object.getJSONObject("response").optInt("user_id"));
                             preference.setPhone(etPhone.getText().toString());
                             Gson gson = new Gson();
                             com.trafficticketbuddy.lawyer.model.login.Response mResponse = gson.fromJson(object.getJSONObject("response").toString(), com.trafficticketbuddy.lawyer.model.login.Response.class);
                             preference.setLoggedInUser(new Gson().toJson(mResponse));
-                            startActivity(new Intent(RegistrationActivity.this,EmailOTPActivity.class));
+                            if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
+                                ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                            }
+                            else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                                    || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
+                                startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
+                            }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                                ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                            }else{
+                                startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                            }
                         }
                         else
                             showDialog(object.getString("message"));
@@ -433,5 +449,72 @@ public class RegistrationActivity extends BaseActivity {
         }
     }
 
+    void ProfileActiveDialog(final String status, String message){
+        final Dialog dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.account_active_dialog);
+        dialog.setCancelable(false);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tvTitle);
+        TextView tvMessage = (TextView) dialog.findViewById(R.id.tvMessage);
+        tvMessage.setText(message);
+        dialog.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.equalsIgnoreCase("0")) {
+                    sendOTP();
+                }else{
+                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
+                        startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
+                    }
+                    else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
+                        startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
+                    }else{
+                        startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
+    }
+
+    private void sendOTP() {
+        if (isNetworkConnected()){
+            showProgressDialog();
+            new ApiEmailsendOTP(getParamResendOTP(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    dismissProgressDialog();
+                    String res=(String)t;
+                    try {
+                        JSONObject object=new JSONObject(res);
+                        if (object.getBoolean("status")){
+                            showDialog(object.getString("message"));
+                            startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.print(res);
+                }
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
+    }
+    private Map<String, String> getParamResendOTP() {
+        Map<String,String> map=new HashMap<>();
+        map.put("user_id",mLoginMain.getResponse().getId());
+        map.put("email",mLoginMain.getResponse().getEmail());
+        return map;
+    }
 }

@@ -1,6 +1,7 @@
 package com.trafficticketbuddy.lawyer;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +20,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -43,11 +46,14 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.trafficticketbuddy.lawyer.apis.ApiEmailsendOTP;
 import com.trafficticketbuddy.lawyer.interfaces.FbLoginCompleted;
 import com.trafficticketbuddy.lawyer.interfaces.GoogleLoginCompleted;
 import com.trafficticketbuddy.lawyer.preferences.Preference;
+import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -59,8 +65,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -453,5 +461,9 @@ public void showDialog(String msg){
                 .thumbnail(0.5f)
                 .into(mImageView);
     }
+
+
+
+
 
 }

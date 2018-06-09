@@ -1,10 +1,12 @@
 package com.trafficticketbuddy.lawyer;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import com.facebook.GraphResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
+import com.trafficticketbuddy.lawyer.apis.ApiEmailsendOTP;
 import com.trafficticketbuddy.lawyer.apis.ApiFaceBookLogin;
 import com.trafficticketbuddy.lawyer.apis.ApiGoogleLogin;
 import com.trafficticketbuddy.lawyer.apis.ApiLogin;
@@ -21,6 +24,7 @@ import com.trafficticketbuddy.lawyer.model.login.LoginMain;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -30,6 +34,7 @@ public class LoginActivity extends BaseActivity {
     private CardView cardLogin,cvGoogleLogin,cvFbLogin;
     private TextView tvForgetPassword;
     private EditText etEmail,etPassword;
+    private LoginMain mLoginMain;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,17 +131,20 @@ public class LoginActivity extends BaseActivity {
         new ApiLogin(getParam(), new OnApiResponseListener() {
             @Override
             public <E> void onSuccess(E t) {
-                {
+
                     dismissProgressDialog();
-                    LoginMain mLoginMain = (LoginMain) t;
+                     mLoginMain = (LoginMain) t;
                     if(mLoginMain.getStatus()){
                         preference.setUserId(mLoginMain.getResponse().getId());
                         preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                        if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                        if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
+                            ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                        }
+                        else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
                                 || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
                             startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
                         }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                            startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
+                            ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
                         }else{
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         }
@@ -144,7 +152,6 @@ public class LoginActivity extends BaseActivity {
                         showDialog(mLoginMain.getMessage());
                     }
 
-                }
             }
 
             @Override
@@ -168,21 +175,23 @@ public class LoginActivity extends BaseActivity {
             @Override
             public <E> void onSuccess(E t) {
                 dismissProgressDialog();
-                {LoginMain mLoginMain = (LoginMain)t;
-                    if(mLoginMain.getStatus()){
-                        preference.setUserId(mLoginMain.getResponse().getId());
-                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                        if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                                || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                            startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                        }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                            startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
-                        }else{
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        }
-                    }else{
-                        showDialog(mLoginMain.getMessage());
+                mLoginMain = (LoginMain) t;
+                if(mLoginMain.getStatus()){
+                    preference.setUserId(mLoginMain.getResponse().getId());
+                    preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
+                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
                     }
+                    else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
+                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
+                    }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                    }else{
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    }
+                }else{
+                    showDialog(mLoginMain.getMessage());
                 }
             }
 
@@ -207,24 +216,26 @@ public class LoginActivity extends BaseActivity {
                 gender,image,google_id,state,country,city), new OnApiResponseListener() {
             @Override
             public <E> void onSuccess(E t) {
-                {
-                    dismissProgressDialog();
-                    LoginMain mLoginMain = (LoginMain)t;
-                    if(mLoginMain.getStatus()){
-                        preference.setUserId(mLoginMain.getResponse().getId());
-                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                        if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                                || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                            startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                        }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                            startActivity(new Intent(LoginActivity.this,EmailOTPActivity.class));
-                        }else{
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        }
-                    }else{
-                        showDialog(mLoginMain.getMessage());
+                dismissProgressDialog();
+                mLoginMain = (LoginMain) t;
+                if(mLoginMain.getStatus()){
+                    preference.setUserId(mLoginMain.getResponse().getId());
+                    preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
+                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
                     }
+                    else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
+                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
+                    }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                    }else{
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    }
+                }else{
+                    showDialog(mLoginMain.getMessage());
                 }
+
             }
 
             @Override
@@ -299,6 +310,77 @@ public class LoginActivity extends BaseActivity {
         map.put("user_type",Constant.USER_TYPE);
         map.put("device_type", "ANDROID");
         map.put("token", preference.getDeviceToken());
+        return map;
+    }
+
+
+
+    void ProfileActiveDialog(final String status, String message){
+        final Dialog dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.account_active_dialog);
+        dialog.setCancelable(false);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tvTitle);
+        TextView tvMessage = (TextView) dialog.findViewById(R.id.tvMessage);
+        tvMessage.setText(message);
+        dialog.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.equalsIgnoreCase("0")) {
+                    sendOTP();
+                }else{
+                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
+                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
+                    }
+                   else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
+                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
+                    }else{
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    }
+                }
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
+    private void sendOTP() {
+        if (isNetworkConnected()){
+            showProgressDialog();
+            new ApiEmailsendOTP(getParamResendOTP(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    dismissProgressDialog();
+                    String res=(String)t;
+                    try {
+                        JSONObject object=new JSONObject(res);
+                        if (object.getBoolean("status")){
+                            showDialog(object.getString("message"));
+                            startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.print(res);
+                }
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
+    }
+    private Map<String, String> getParamResendOTP() {
+        Map<String,String> map=new HashMap<>();
+        map.put("user_id",mLoginMain.getResponse().getId());
+        map.put("email",mLoginMain.getResponse().getEmail());
         return map;
     }
 }

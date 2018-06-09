@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -39,9 +40,17 @@ public class CaseDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
       /*  requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-  */      setContentView(R.layout.activity_casedetails);
-        tvHeading = (TextView)findViewById(R.id.tvHeading);
-        tvHeading.setText("CASE DETAILS");
+  */
+        setContentView(R.layout.activity_casedetails);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         ivLicense = (ImageView)findViewById(R.id.ivLicense);
         ivBackImage = (ImageView)findViewById(R.id.ivBackImage);
         ivFontImage = (ImageView)findViewById(R.id.ivFontImage);

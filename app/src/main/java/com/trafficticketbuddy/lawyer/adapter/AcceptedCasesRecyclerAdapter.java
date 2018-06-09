@@ -27,7 +27,7 @@ public class AcceptedCasesRecyclerAdapter extends RecyclerView.Adapter<AcceptedC
     public class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linOpenCase;
         ImageView ivProfileImage;
-        TextView tvCaseno,tvStateCity,tvDate,tvTime,tvBidCount;
+        TextView tvCaseno,tvStateCity,tvDate,tvTime,tvBidCount,tvName;
         public MyViewHolder(View view) {
             super(view);
             linOpenCase = (LinearLayout)view.findViewById(R.id.linOpenCase);
@@ -37,6 +37,7 @@ public class AcceptedCasesRecyclerAdapter extends RecyclerView.Adapter<AcceptedC
             tvDate = (TextView)view.findViewById(R.id.tvDate);
             tvTime = (TextView)view.findViewById(R.id.tvTime);
             tvBidCount = (TextView)view.findViewById(R.id.tvBidCount);
+            tvName = (TextView)view.findViewById(R.id.tvName);
         }
     }
 
@@ -66,6 +67,7 @@ public class AcceptedCasesRecyclerAdapter extends RecyclerView.Adapter<AcceptedC
         holder.tvDate.setText(""+splited[0]);
         holder.tvTime.setText(""+splited[1]);
         holder.tvBidCount.setText(""+dataList.get(position).getBidAmount());
+        holder.tvName.setText(""+dataList.get(position).getClientFirstName()+" "+dataList.get(position).getClientLastName());
         holder.linOpenCase.setTag(position);
         holder.linOpenCase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +79,6 @@ public class AcceptedCasesRecyclerAdapter extends RecyclerView.Adapter<AcceptedC
     }
     @Override
     public int getItemCount() {
-        return /*dataList.size()*/10;
+        return dataList.size();
     }
 }

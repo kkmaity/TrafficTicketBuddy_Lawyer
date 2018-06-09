@@ -5,12 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar_header_view"
-        layout="@layout/widget_header_view_backbutton"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:visibility="visible" />
+        android:background="@drawable/gradient_primary"
+        android:layout_height="?attr/actionBarSize">
+        <TextView
+            android:layout_width="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="CASE DETAILS"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/_16sdp"
+            android:textColor="@color/white"
+            android:gravity="center|start"
+            android:layout_height="match_parent" />
+
+    </android.support.v7.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

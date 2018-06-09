@@ -3,6 +3,7 @@ package com.trafficticketbuddy.lawyer;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,23 +58,25 @@ public class MyCaseActivity extends BaseActivity {
         String json = preference.getString("login_user", "");
         mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
         viewPager = (ViewPager) findViewById(R.id.id_viewpager);
-        back = (ImageView) findViewById(R.id.back);
-        back.setOnClickListener(this);
-        mMyCaseAdapter = new MyCaseAdapter(getSupportFragmentManager());
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        mMyCaseAdapter = new MyCaseAdapter(getSupportFragmentManager());
         AcceptedCaseFragment mOpenCaseFragment= new AcceptedCaseFragment();
         mMyCaseAdapter.addFragment(mOpenCaseFragment, "Accepted");
-
         MadeBidFragment mAllCaseFragment = new MadeBidFragment();
         mMyCaseAdapter.addFragment(mAllCaseFragment, "Made Bid");
-
         viewPager.setAdapter(mMyCaseAdapter);
         tabLayout = (TabLayout) findViewById(R.id.id_tabs);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(0);
-
-        tvHeading = (TextView)findViewById(R.id.tvHeading);
-        tvHeading.setText("MY CASES");
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -145,9 +148,7 @@ public class MyCaseActivity extends BaseActivity {
     public void onClick(View view) {
         super.onClick(view);
         switch (view.getId()){
-            case R.id.back:
-                finish();
-                break;
+
         }
     }
 }
