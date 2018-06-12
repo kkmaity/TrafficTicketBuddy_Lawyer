@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 
 import com.trafficticketbuddy.lawyer.adapter.MadeBidRecyclerAdapter;
 import com.trafficticketbuddy.lawyer.apis.ApiFetchAllCases;
+import com.trafficticketbuddy.lawyer.apis.ApiLogin;
+import com.trafficticketbuddy.lawyer.apis.ApiUserDetails;
 import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -35,6 +37,7 @@ import com.trafficticketbuddy.lawyer.fragement.TextFragment;
 import com.trafficticketbuddy.lawyer.model.fetchCase.FetchCasesMain;
 import com.trafficticketbuddy.lawyer.model.homeBanner.HomeBannerMain;
 
+import com.trafficticketbuddy.lawyer.model.login.LoginMain;
 import com.trafficticketbuddy.lawyer.model.login.Response;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.utils.Constant;
@@ -206,10 +209,10 @@ public class MainActivity extends BaseActivity {
                 String path = Constant.BASE_URL + mLogin.getProfileImage();
                 Glide.with(this).load(path).into(profile_image);
             }
-            //getAllCase();
+            if(mLogin.getIsActive().equalsIgnoreCase("0")){
+                getUser();
+            }
         }
-
-
     }
 
     /* @Override
@@ -352,5 +355,35 @@ public class MainActivity extends BaseActivity {
         });
         dialog.show();
 
+    }
+
+
+    public void getUser(){
+        if (isNetworkConnected()) {
+            new ApiUserDetails(getParam(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    LoginMain mLoginMain = (LoginMain) t;
+                    if (mLoginMain.getStatus()) {
+                        mLogin = mLoginMain.getResponse();
+                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                    }
+                }
+
+                @Override
+                public <E> void onError(E t) {
+                }
+
+                @Override
+                public void onError() {
+                }
+            });
+        }
+    }
+
+    private Map<String,String> getParam(){
+        Map<String,String> map=new HashMap<>();
+        map.put("user_id",mLogin.getId());
+        return map;
     }
 }

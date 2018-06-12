@@ -37,6 +37,10 @@ public interface RestInterface {
  @POST("api/v1/user/login")
  Call<LoginMain> login(@FieldMap Map<String,String> params);
 
+ @FormUrlEncoded
+ @POST("api/v1/user/getuser")
+ Call<LoginMain> getUser(@FieldMap Map<String,String> params);
+
  @Multipart
  @POST("api/v1/user/updateLawyerProfile")
  Call<LoginMain> editprofile(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part profile_image,
@@ -60,6 +64,10 @@ public interface RestInterface {
  @FormUrlEncoded
  @POST("api/v1/user/resetpassword")
  Call<ResponseBody> resetpassword(@FieldMap Map<String,String> params);
+
+ @FormUrlEncoded
+ @POST("api/v1/user/forgotpassword")
+ Call<ResponseBody> forgotpassword(@FieldMap Map<String,String> params);
 
  @FormUrlEncoded
  @POST("api/v1/user/resend_otp")
