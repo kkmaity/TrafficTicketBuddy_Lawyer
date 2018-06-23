@@ -7,7 +7,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="@drawable/gradient_primary"
+        android:background="?attr/colorPrimary"
         android:layout_height="?attr/actionBarSize">
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
         app:tabSelectedTextColor="@color/white"
         app:tabIndicatorColor="@color/colorPrimaryDark"
         app:tabTextColor="@color/white"
-        app:tabBackground="@color/dodger_blue" />
+        android:background="?attr/colorPrimary" />
     <android.support.v4.view.ViewPager
         android:id="@+id/id_viewpager"
         android:layout_width="match_parent"

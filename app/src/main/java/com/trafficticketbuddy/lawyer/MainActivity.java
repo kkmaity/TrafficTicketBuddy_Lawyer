@@ -104,7 +104,6 @@ public class MainActivity extends BaseActivity {
         String deviceToken=    preference.getDeviceToken();
         System.out.println("!!!!!!!!!!!"+deviceToken);
         init();
-
         rvRecycler = (RecyclerView)findViewById(R.id.rvRecycler);
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setRefreshing(false);
@@ -112,6 +111,7 @@ public class MainActivity extends BaseActivity {
         mLayoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRecycler.setLayoutManager(mLayoutManager);
         setAdapterRecyclerView();
+
         fetchAllCases();
     }
 
@@ -367,6 +367,9 @@ public class MainActivity extends BaseActivity {
                     if (mLoginMain.getStatus()) {
                         mLogin = mLoginMain.getResponse();
                         preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                        if(mLogin.getIsActive().equalsIgnoreCase("0")){
+                            ProfileActiveDialog(mLogin.getAdminMessage());
+                        }
                     }
                 }
 
@@ -385,5 +388,23 @@ public class MainActivity extends BaseActivity {
         Map<String,String> map=new HashMap<>();
         map.put("user_id",mLogin.getId());
         return map;
+    }
+
+    void ProfileActiveDialog(String message){
+        final Dialog dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.account_active_dialog);
+        dialog.setCancelable(false);
+        TextView tvTitle = (TextView) dialog.findViewById(R.id.tvTitle);
+        TextView tvMessage = (TextView) dialog.findViewById(R.id.tvMessage);
+        tvMessage.setText(message);
+        dialog.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,EditProfileActivity.class));
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

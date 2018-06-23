@@ -387,9 +387,6 @@ public class EditProfileActivity extends BaseActivity {
                         if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
                                 || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
 
-                        }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                            startActivity(new Intent(EditProfileActivity.this,EmailOTPActivity.class));
-                            finish();
                         }else{
                             startActivity(new Intent(EditProfileActivity.this,MainActivity.class));
                             finish();
@@ -948,42 +945,6 @@ public class EditProfileActivity extends BaseActivity {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-
-
-    private void recendOTP() {
-        if (isNetworkConnected()){
-            showProgressDialog();
-            new ApiResendOTP(getParamResendOTP(), new OnApiResponseListener() {
-                @Override
-                public <E> void onSuccess(E t) {
-                    dismissProgressDialog();
-                    String res=(String)t;
-                    try {
-                        JSONObject object=new JSONObject(res);
-                        if (object.getBoolean("status")){
-                            startActivity(new Intent(EditProfileActivity.this,OTPActivity.class));
-                            finish();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.print(res);
-
-
-                }
-
-                @Override
-                public <E> void onError(E t) {
-                    dismissProgressDialog();
-                }
-
-                @Override
-                public void onError() {
-                    dismissProgressDialog();
-                }
-            });
-        }
-    }
 
     private Map<String, String> getParamResendOTP() {
         Map<String,String> map=new HashMap<>();

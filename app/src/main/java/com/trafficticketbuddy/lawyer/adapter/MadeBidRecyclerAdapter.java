@@ -68,9 +68,6 @@ public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecycler
         ImageLoader.getInstance().displayImage(Constant.BASE_URL+dataList.get(position).getCaseFrontImg(), holder.ivFontImage, BaseActivity.cacheOptions);
         ImageLoader.getInstance().displayImage(Constant.BASE_URL+dataList.get(position).getCaseRearImg(), holder.ivBackImage, BaseActivity.cacheOptions);
         String[] splited = dataList.get(position).getCreatedAt().split("\\s+");
-        holder.tvCaseno.setText(dataList.get(position).getCaseNumber());
-        holder.tvStateCity.setText(dataList.get(position).getState()+" "+dataList.get(position).getCity());
-        holder.tvDesc.setText(dataList.get(position).getCaseDetails());
         holder.tvDate.setText(""+splited[0]);
         holder.tvTime.setText(""+splited[1]);
         holder.tvBidCount.setText(""+dataList.get(position).getBidCount());

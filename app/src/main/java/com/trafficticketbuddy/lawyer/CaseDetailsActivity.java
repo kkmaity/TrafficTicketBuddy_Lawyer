@@ -72,8 +72,8 @@ public class CaseDetailsActivity extends BaseActivity {
             loadImage(this,mCaseResponse.getDrivingLicense(),ivLicense);
             loadImage(this,mCaseResponse.getCaseFrontImg(),ivFontImage);
             loadImage(this,mCaseResponse.getCaseRearImg(),ivBackImage);
-            tvState.setText(mCaseResponse.getState());
-            tvCity.setText(mCaseResponse.getCity());
+            tvState.setText(mCaseResponse.getCity());
+            tvCity.setText(mCaseResponse.getState());
             tvDesc.setText(mCaseResponse.getCaseDetails());
             tvCaseno.setText("Case details for case no. "+mCaseResponse.getCaseNumber());
             String json = preference.getString("login_user", "");

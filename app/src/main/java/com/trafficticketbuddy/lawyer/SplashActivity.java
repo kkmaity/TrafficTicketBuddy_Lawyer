@@ -70,12 +70,11 @@ public class SplashActivity extends BaseActivity{
                 String json = preference.getString("login_user", "");
                 Response mLoginMain = gson.fromJson(json, Response.class);
                 if(mLoginMain!=null) {
-                    if (mLoginMain.getPhone().isEmpty() || mLoginMain.getCountry().isEmpty()
-                            || mLoginMain.getState().isEmpty() || mLoginMain.getCity().isEmpty()) {
-                        startActivity(new Intent(SplashActivity.this, EditProfileActivity.class));
+                    if(mLoginMain.getIsEmailVerified().equalsIgnoreCase("0")){
+                        startActivity(new Intent(SplashActivity.this,LoginActivity.class));
                         finish();
-                    } else {
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    }else{
+                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
                         finish();
                     }
                 }else{

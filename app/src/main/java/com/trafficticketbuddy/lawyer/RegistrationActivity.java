@@ -283,16 +283,11 @@ public class RegistrationActivity extends BaseActivity {
                             Gson gson = new Gson();
                             com.trafficticketbuddy.lawyer.model.login.Response mResponse = gson.fromJson(object.getJSONObject("response").toString(), com.trafficticketbuddy.lawyer.model.login.Response.class);
                             preference.setLoggedInUser(new Gson().toJson(mResponse));
-                            if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
-                                ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
-                            }
-                            else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                                    || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                                startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
-                            }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                                ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                            if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                                ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
                             }else{
                                 startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                                finish();
                             }
                         }
                         else
@@ -449,7 +444,7 @@ public class RegistrationActivity extends BaseActivity {
         }
     }
 
-    void ProfileActiveDialog(final String status, String message){
+    void ProfileActiveDialog(String message){
         final Dialog dialog=new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.account_active_dialog);
@@ -460,24 +455,11 @@ public class RegistrationActivity extends BaseActivity {
         dialog.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(status.equalsIgnoreCase("0")) {
-                    sendOTP();
-                }else{
-                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
-                        startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
-                    }
-                    else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                        startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
-                    }else{
-                        startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
-                    }
-                }
+                sendOTP();
                 dialog.dismiss();
             }
         });
         dialog.show();
-
     }
 
     private void sendOTP() {
@@ -492,7 +474,8 @@ public class RegistrationActivity extends BaseActivity {
                         JSONObject object=new JSONObject(res);
                         if (object.getBoolean("status")){
                             showDialog(object.getString("message"));
-                            startActivity(new Intent(RegistrationActivity.this,EditProfileActivity.class));
+                            startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
+                            finish();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

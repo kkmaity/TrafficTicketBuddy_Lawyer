@@ -131,22 +131,16 @@ public class LoginActivity extends BaseActivity {
         new ApiLogin(getParam(), new OnApiResponseListener() {
             @Override
             public <E> void onSuccess(E t) {
-
                     dismissProgressDialog();
                      mLoginMain = (LoginMain) t;
                     if(mLoginMain.getStatus()){
                         preference.setUserId(mLoginMain.getResponse().getId());
                         preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                        if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
-                            ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
-                        }
-                        else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                                || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                            startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                        }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                            ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                       if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                            ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
                         }else{
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                            finish();
                         }
                     }else{
                         showDialog(mLoginMain.getMessage());
@@ -179,16 +173,11 @@ public class LoginActivity extends BaseActivity {
                 if(mLoginMain.getStatus()){
                     preference.setUserId(mLoginMain.getResponse().getId());
                     preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
-                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
-                    }
-                    else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                    }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                    if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                        ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
                     }else{
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        finish();
                     }
                 }else{
                     showDialog(mLoginMain.getMessage());
@@ -221,16 +210,11 @@ public class LoginActivity extends BaseActivity {
                 if(mLoginMain.getStatus()){
                     preference.setUserId(mLoginMain.getResponse().getId());
                     preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
-                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
-                    }
-                    else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                    }else if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                        ProfileActiveDialog(mLoginMain.getResponse().getIsEmailVerified(),mLoginMain.getResponse().getAdminMessage());
+                    if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                        ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
                     }else{
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        finish();
                     }
                 }else{
                     showDialog(mLoginMain.getMessage());
@@ -315,7 +299,7 @@ public class LoginActivity extends BaseActivity {
 
 
 
-    void ProfileActiveDialog(final String status, String message){
+    void ProfileActiveDialog(String message){
         final Dialog dialog=new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.account_active_dialog);
@@ -326,24 +310,11 @@ public class LoginActivity extends BaseActivity {
         dialog.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(status.equalsIgnoreCase("0")) {
-                    sendOTP();
-                }else{
-                    if(mLoginMain.getResponse().getIsActive().equalsIgnoreCase("0")){
-                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                    }
-                   else if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                            || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
-                        startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
-                    }else{
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                    }
-                }
+                sendOTP();
                 dialog.dismiss();
             }
         });
         dialog.show();
-
     }
 
     private void sendOTP() {
@@ -358,7 +329,6 @@ public class LoginActivity extends BaseActivity {
                         JSONObject object=new JSONObject(res);
                         if (object.getBoolean("status")){
                             showDialog(object.getString("message"));
-                            startActivity(new Intent(LoginActivity.this,EditProfileActivity.class));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
