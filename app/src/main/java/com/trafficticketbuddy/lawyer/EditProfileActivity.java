@@ -322,31 +322,27 @@ public class EditProfileActivity extends BaseActivity {
     }
 
     private void callCountryAPI(){
-        if (isNetworkConnected()) {
+        if (isNetworkConnected()){
             showProgressDialog();
-            new ApiCountry(new OnApiResponseListener() {
+            new ApiCountry(new OnApiResponseListener(){
                 @Override
-                public <E> void onSuccess(E t) {
+                public <E> void onSuccess(E t){
                     dismissProgressDialog();
                     CountryMain main= (CountryMain)t;
                     if (main.getStatus()){
                         countryPopup(main.getResponse());
                     }
                 }
-
                 @Override
                 public <E> void onError(E t) {
                     dismissProgressDialog();
-
                 }
-
                 @Override
                 public void onError() {
                     dismissProgressDialog();
                 }
             });
         }
-
     }
 
     private void isValidate(){
@@ -364,9 +360,9 @@ public class EditProfileActivity extends BaseActivity {
             et_city.setError("Please select city");
         }else if(et_degree.getText().toString().isEmpty()){
             et_degree.setError("Please enter degree");
-        }else if(Image_profile==null && mLogin.getProfileImage().isEmpty()){
+        }else if(Image_profile==null && mLogin.getProfileImage() == null){
             showDialog("Please select profile image");
-        }else if(degree_image==null && degree_image.size()<=0){
+        }else if(degree_image==null || degree_image.size()<=0){
             showDialog("Please provide educational certificate");
         }else {
             doEditProfileApi();

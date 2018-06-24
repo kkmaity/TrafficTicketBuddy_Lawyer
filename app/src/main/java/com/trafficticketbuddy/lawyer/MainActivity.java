@@ -206,8 +206,19 @@ public class MainActivity extends BaseActivity {
                 tvEmail.setText(mLogin.getEmail());
             }
             if (mLogin.getProfileImage() != null) {
-                String path = Constant.BASE_URL + mLogin.getProfileImage();
-                Glide.with(this).load(path).into(profile_image);
+                if(mLogin.getProfileImage().startsWith("http")){
+                    Glide.with(this).load(mLogin.getProfileImage()).into(profile_image);
+                }else{
+                    if(mLogin.getProfileImage().contains("client_profile_image")){
+                        String path = mLogin.getProfileImage();
+                        path = path.replace("client_profile_image","lawyer_profile_image");
+                        path = Constant.BASE_URL+path;
+                        Glide.with(this).load(path).into(profile_image);
+                    }else {
+                        String path = Constant.BASE_URL + mLogin.getProfileImage();
+                        Glide.with(this).load(path).into(profile_image);
+                    }
+                }
             }
             if(mLogin.getIsActive().equalsIgnoreCase("0")){
                 getUser();
