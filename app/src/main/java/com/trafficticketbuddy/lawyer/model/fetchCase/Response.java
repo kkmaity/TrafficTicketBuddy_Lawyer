@@ -39,8 +39,32 @@ public class Response<R> implements Serializable{
     @SerializedName("bid_count")
     @Expose
     private String bidCount;
+    @SerializedName("accepted_lawyer_id")
+    @Expose
+    private String accepted_lawyer_id;
+    @SerializedName("is_bided")
+    @Expose
+    private String is_bided;
+
+    public String getAccepted_lawyer_id() {
+        return accepted_lawyer_id;
+    }
+
+    public void setAccepted_lawyer_id(String accepted_lawyer_id) {
+        this.accepted_lawyer_id = accepted_lawyer_id;
+    }
+
+    public String getIs_bided() {
+        return is_bided;
+    }
+
+    public void setIs_bided(String is_bided) {
+        this.is_bided = is_bided;
+    }
+
     @SerializedName("client_id")
     @Expose
+
     private String clientId;
     @SerializedName("client_first_name")
     @Expose
