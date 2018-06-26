@@ -83,6 +83,12 @@ public class MadeBidRecyclerAdapter extends RecyclerView.Adapter<MadeBidRecycler
             }
         });
 
+        if(dataList.get(position).getIs_bided().equals("1")){
+            holder.linAllCase.setBackgroundColor(mContext.getResources().getColor(R.color.is_bided));
+        }else {
+            holder.linAllCase.setBackgroundColor(mContext.getResources().getColor(R.color.is_not_bided));
+        }
+
     }
     @Override
     public int getItemCount() {

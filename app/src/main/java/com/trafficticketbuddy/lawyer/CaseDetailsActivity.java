@@ -62,7 +62,11 @@ public class CaseDetailsActivity extends BaseActivity {
         cardBidNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmBidDialog();
+                if(mCaseResponse.getIs_bided().equals("0")) {
+                    confirmBidDialog();
+                }else{
+                    showDialog("Bid has been already placed");
+                }
             }
         });
 
@@ -91,7 +95,7 @@ public class CaseDetailsActivity extends BaseActivity {
         cardSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitBidApi(et_bid_price.getText().toString(),et_description.getText().toString());
+                submitBidApi(et_bid_price.getText().toString(), et_description.getText().toString());
                 dialog.dismiss();
             }
         });

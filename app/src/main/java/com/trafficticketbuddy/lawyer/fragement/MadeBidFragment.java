@@ -66,7 +66,11 @@ public class MadeBidFragment extends BaseFragment implements MadeBidCaseDataLoad
     @Override
     public void madeBidCaseDataLoaded(List<Response> caseListData) {
         this.caseListData.clear();
-        this.caseListData=caseListData;
+        for (Response mResponse:caseListData) {
+            if(!mResponse.getCaseStatus().equalsIgnoreCase("ACCEPTED")){
+                this.caseListData.add(mResponse);
+            }
+        }
         setAdapterRecyclerView();
     }
 }

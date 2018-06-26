@@ -254,8 +254,6 @@ public class MainActivity extends BaseActivity {
 
     void fetchAllCases(){
         if (isNetworkConnected()){
-
-
             showProgressDialog();
        new ApiFetchAllCases(getParams(), new OnApiResponseListener() {
            @Override
@@ -264,9 +262,12 @@ public class MainActivity extends BaseActivity {
                dismissProgressDialog();
                FetchCasesMain main=(FetchCasesMain)t;
                if (main.getStatus()){
-                   caseListData.addAll(main.getResponse());
+                   for (com.trafficticketbuddy.lawyer.model.fetchCase.Response<R> mResponse :main.getResponse()) {
+                       if(mResponse.getAccepted_lawyer_id().equals("0")){
+                           caseListData.add(mResponse);
+                       }
+                   }
                    mAllCasesRecyclerAdapter.notifyDataSetChanged();
-
                }
 
            }

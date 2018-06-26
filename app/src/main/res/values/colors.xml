@@ -24,6 +24,8 @@
     <color name="red">#109af5</color>
 
     <color name="bg_title">#66999999</color>
+    <color name="is_bided">#66cbf1a2</color>
+    <color name="is_not_bided">#fff</color>
 
 
 </resources>

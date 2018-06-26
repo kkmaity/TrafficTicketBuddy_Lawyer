@@ -43,7 +43,7 @@
                 android:textSize="@dimen/_11sdp"
                 android:fontFamily="@font/lato_regular"
                 android:background="@null"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:maxLines="1"
                 android:textColor="@color/txt_grey"
                 android:textColorHint="@color/hint_grey"
