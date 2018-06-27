@@ -45,6 +45,17 @@ public class Response<R> implements Serializable{
     @SerializedName("is_bided")
     @Expose
     private String is_bided;
+    @SerializedName("is_view")
+    @Expose
+    private String is_view;
+
+    public String getIs_view() {
+        return is_view;
+    }
+
+    public void setIs_view(String is_view) {
+        this.is_view = is_view;
+    }
 
     public String getAccepted_lawyer_id() {
         return accepted_lawyer_id;

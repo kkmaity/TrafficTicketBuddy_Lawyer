@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private LinearLayout linMyProfile,linSettings,linFileCase,linMyCase,linMyCase_drawer,linLogout;
-    private TextView tvName,tvEmail;
+    private TextView tvName,tvEmail,txtNoItem;
     private ImageView profile_image;
     private Response mLogin;
     private static int currentPage = 0;
@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity {
         linMyCase_drawer=(LinearLayout)findViewById(R.id.linMyCase_drawer);
         linLogout=(LinearLayout)findViewById(R.id.linLogout);
         tvName=(TextView)findViewById(R.id.tvName);
+        txtNoItem=(TextView)findViewById(R.id.txtNoItem);
         tvEmail=(TextView)findViewById(R.id.tvEmail);
         profile_image=(ImageView)findViewById(R.id.profile_image);
 
@@ -196,8 +197,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
+        if(mAllCasesRecyclerAdapter!=null) {
+            mAllCasesRecyclerAdapter.notifyDataSetChanged();
+        }
         if(mLogin!=null) {
             if (mLogin.getFirstName() != null && mLogin.getLastName() != null) {
                 tvName.setText(mLogin.getFirstName() + " " + mLogin.getLastName());
@@ -241,6 +243,7 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(Object viewID, int position) {
                 switch (position) {
                     case R.id.linAllCase:
+                        caseListData.get(Integer.parseInt(String.valueOf(viewID))).setIs_view("1");
                         Intent mIntent = new Intent(MainActivity.this,CaseDetailsActivity.class);
                         mIntent.putExtra("data",caseListData.get(Integer.parseInt(String.valueOf(viewID))));
                         startActivity(mIntent);
@@ -263,9 +266,16 @@ public class MainActivity extends BaseActivity {
                FetchCasesMain main=(FetchCasesMain)t;
                if (main.getStatus()){
                    for (com.trafficticketbuddy.lawyer.model.fetchCase.Response<R> mResponse :main.getResponse()) {
-                       if(mResponse.getAccepted_lawyer_id().equals("0")){
+                       if(mResponse.getAccepted_lawyer_id().equals("0") && mResponse.getIs_bided().equals("0")){
                            caseListData.add(mResponse);
                        }
+                   }
+                   if(caseListData.size()<=0) {
+                       rvRecycler.setVisibility(View.GONE);
+                       txtNoItem.setVisibility(View.VISIBLE);
+                   }else{
+                       rvRecycler.setVisibility(View.VISIBLE);
+                       txtNoItem.setVisibility(View.GONE);
                    }
                    mAllCasesRecyclerAdapter.notifyDataSetChanged();
                }

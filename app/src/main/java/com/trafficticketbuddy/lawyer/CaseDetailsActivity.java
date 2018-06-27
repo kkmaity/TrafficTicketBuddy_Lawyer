@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.trafficticketbuddy.lawyer.apis.ApiSetViewed;
 import com.trafficticketbuddy.lawyer.apis.ApiSubmitBid;
 import com.trafficticketbuddy.lawyer.model.fetchCase.Response;
 import com.trafficticketbuddy.lawyer.model.placebid.PlaceBidMain;
@@ -83,6 +84,8 @@ public class CaseDetailsActivity extends BaseActivity {
             String json = preference.getString("login_user", "");
             mLogin = new Gson().fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
         }
+
+        setView();
     }
 
     void confirmBidDialog(){
@@ -147,6 +150,44 @@ public class CaseDetailsActivity extends BaseActivity {
         map.put("case_id", mCaseResponse.getId());
         map.put("bid_text", bid_text);
         map.put("bid_amount", amount);
+        return map;
+    }
+
+
+    private void setView() {
+        if (isNetworkConnected()){
+            showProgressDialog();
+            new ApiSetViewed(getParam(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    dismissProgressDialog();
+                    String res=(String)t;
+                    try {
+                        JSONObject object=new JSONObject(res);
+                        if (object.getBoolean("status")){
+                            showDialog(object.getString("message"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.print(res);
+                }
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
+
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
+    }
+    private Map<String, String> getParam() {
+        Map<String,String> map=new HashMap<>();
+        map.put("user_id",preference.getUserId());
+        map.put("case_id",mCaseResponse.getId());
         return map;
     }
 }

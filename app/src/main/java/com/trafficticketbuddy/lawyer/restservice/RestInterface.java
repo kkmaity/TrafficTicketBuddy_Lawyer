@@ -78,6 +78,10 @@ public interface RestInterface {
  Call<ResponseBody> send_mail_otp(@FieldMap Map<String,String> params);
 
  @FormUrlEncoded
+ @POST("api/v1/user/setViewed")
+ Call<ResponseBody> setViewed(@FieldMap Map<String,String> params);
+
+ @FormUrlEncoded
  @POST("api/v1/user/validate_otp")
  Call<ResponseBody> validate_otp(@FieldMap Map<String,String> params);
 
