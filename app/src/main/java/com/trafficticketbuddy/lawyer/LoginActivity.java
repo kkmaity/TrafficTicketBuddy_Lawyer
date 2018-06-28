@@ -2,6 +2,7 @@ package com.trafficticketbuddy.lawyer;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -27,6 +28,7 @@ import com.trafficticketbuddy.lawyer.utils.Constant;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +91,7 @@ public class LoginActivity extends BaseActivity {
                         String id = account.getId();
                         String pic_url="";
                         if(account.getPhotoUrl()!=null) {
-                            pic_url = account.getPhotoUrl().getPath();
+                            pic_url = account.getPhotoUrl().toString();
                         }
                         if(!email.isEmpty()) {
                             doGoogleLoginApi(first_name, last_name, email, "", "", pic_url, id, "", "", "");

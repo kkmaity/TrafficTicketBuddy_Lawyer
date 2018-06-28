@@ -108,13 +108,24 @@ public class MainActivity extends BaseActivity {
         rvRecycler = (RecyclerView)findViewById(R.id.rvRecycler);
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setRefreshing(false);
-        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setEnabled(true);
         mLayoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRecycler.setLayoutManager(mLayoutManager);
         setAdapterRecyclerView();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                fetchAllCases();
+            }
+        });
 
-        fetchAllCases();
+        if(mLogin.getIsActive().equalsIgnoreCase("0")){
+            getUser();
+        }
     }
+
+
 
     private void init() {
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this).build();
@@ -197,9 +208,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(mAllCasesRecyclerAdapter!=null) {
-            mAllCasesRecyclerAdapter.notifyDataSetChanged();
-        }
+        fetchAllCases();
+//        if(mAllCasesRecyclerAdapter!=null) {
+//            mAllCasesRecyclerAdapter.notifyDataSetChanged();
+//        }
         if(mLogin!=null) {
             if (mLogin.getFirstName() != null && mLogin.getLastName() != null) {
                 tvName.setText(mLogin.getFirstName() + " " + mLogin.getLastName());
@@ -222,9 +234,7 @@ public class MainActivity extends BaseActivity {
                     }
                 }
             }
-            if(mLogin.getIsActive().equalsIgnoreCase("0")){
-                getUser();
-            }
+
         }
     }
 

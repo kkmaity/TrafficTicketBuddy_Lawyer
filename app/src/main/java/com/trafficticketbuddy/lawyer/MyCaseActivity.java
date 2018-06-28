@@ -128,11 +128,17 @@ public class MyCaseActivity extends BaseActivity {
                 @Override
                 public <E> void onError(E t) {
                     dismissProgressDialog();
+                    caseListData.clear();
+                    allcaselistener.madeBidCaseDataLoaded(caseListData);
+                    opencaselistener.acceptedCaseDataLoaded(caseListData);
                 }
 
                 @Override
                 public void onError() {
                     dismissProgressDialog();
+                    caseListData.clear();
+                    allcaselistener.madeBidCaseDataLoaded(caseListData);
+                    opencaselistener.acceptedCaseDataLoaded(caseListData);
                 }
             });
         }
