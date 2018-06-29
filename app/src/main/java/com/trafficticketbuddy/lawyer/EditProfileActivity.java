@@ -362,7 +362,7 @@ public class EditProfileActivity extends BaseActivity {
             et_degree.setError("Please enter degree");
         }else if(Image_profile==null && mLogin.getProfileImage() == null){
             showDialog("Please select profile image");
-        }else if(degree_image==null || degree_image.size()<=0){
+        }else if(degree_image.size()<=0 && mLogin.getDegreeImages().size()<=0){
             showDialog("Please provide educational certificate");
         }else {
             doEditProfileApi();
@@ -384,7 +384,6 @@ public class EditProfileActivity extends BaseActivity {
                                 || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
 
                         }else{
-                            startActivity(new Intent(EditProfileActivity.this,MainActivity.class));
                             finish();
                         }
                     }else{

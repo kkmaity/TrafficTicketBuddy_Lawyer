@@ -267,12 +267,12 @@ public class MainActivity extends BaseActivity {
 
     void fetchAllCases(){
         if (isNetworkConnected()){
-            showProgressDialog();
+            swipeRefreshLayout.setRefreshing(true);
        new ApiFetchAllCases(getParams(), new OnApiResponseListener() {
            @Override
            public <E> void onSuccess(E t) {
                caseListData.clear();
-               dismissProgressDialog();
+               swipeRefreshLayout.setRefreshing(false);
                FetchCasesMain main=(FetchCasesMain)t;
                if (main.getStatus()){
                    for (com.trafficticketbuddy.lawyer.model.fetchCase.Response<R> mResponse :main.getResponse()) {
@@ -294,12 +294,12 @@ public class MainActivity extends BaseActivity {
 
            @Override
            public <E> void onError(E t) {
-               dismissProgressDialog();
+               swipeRefreshLayout.setRefreshing(false);
            }
 
            @Override
            public void onError() {
-               dismissProgressDialog();
+               swipeRefreshLayout.setRefreshing(false);
            }
        });
         }
@@ -399,7 +399,12 @@ public class MainActivity extends BaseActivity {
                     if (mLoginMain.getStatus()) {
                         mLogin = mLoginMain.getResponse();
                         preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                        if(mLogin.getIsActive().equalsIgnoreCase("0")){
+                        if(mLogin.getDegreeImages().size()<=0 || mLogin.getCountry().equals("")
+                                || mLogin.getCity().equals("") || mLogin.getState().equals("")
+                                || mLogin.getDegree().equals("")){
+                            ProfileActiveDialog("Your profile information is not complete. Please complete your profile");
+                        }
+                        else if(mLogin.getIsActive().equalsIgnoreCase("0")){
                             ProfileActiveDialog(mLogin.getAdminMessage());
                         }
                     }
