@@ -55,6 +55,9 @@ public class CaseDetailsActivity extends BaseActivity {
         ivLicense = (ImageView)findViewById(R.id.ivLicense);
         ivBackImage = (ImageView)findViewById(R.id.ivBackImage);
         ivFontImage = (ImageView)findViewById(R.id.ivFontImage);
+        ivLicense.setOnClickListener(this);
+        ivBackImage.setOnClickListener(this);
+        ivFontImage.setOnClickListener(this);
         tvDesc = (TextView)findViewById(R.id.tvDesc);
         tvState = (TextView)findViewById(R.id.tvState);
         tvCity = (TextView)findViewById(R.id.tvCity);
@@ -83,9 +86,13 @@ public class CaseDetailsActivity extends BaseActivity {
             tvCaseno.setText("Case details for case no. "+mCaseResponse.getCaseNumber());
             String json = preference.getString("login_user", "");
             mLogin = new Gson().fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
+
+            if(mCaseResponse.getIs_view().equals("0")) {
+                setView();
+            }
         }
 
-        setView();
+
     }
 
     void confirmBidDialog(){
@@ -189,5 +196,22 @@ public class CaseDetailsActivity extends BaseActivity {
         map.put("user_id",preference.getUserId());
         map.put("case_id",mCaseResponse.getId());
         return map;
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        Intent mIntent;
+        switch (view.getId()){
+            case R.id.ivLicense:
+                FullImageActivity.start(CaseDetailsActivity.this, mCaseResponse.getDrivingLicense(), ivLicense);
+                break;
+            case R.id.ivBackImage:
+                FullImageActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseRearImg(), ivBackImage);
+                break;
+            case R.id.ivFontImage:
+                FullImageActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseFrontImg(), ivFontImage);
+                break;
+        }
     }
 }

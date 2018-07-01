@@ -3,6 +3,9 @@ package com.trafficticketbuddy.lawyer;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,12 +13,14 @@ import android.widget.TextView;
 
 
 import com.google.gson.Gson;
+import com.trafficticketbuddy.lawyer.adapter.AcceptedCasesRecyclerAdapter;
 import com.trafficticketbuddy.lawyer.adapter.MyCaseAdapter;
 import com.trafficticketbuddy.lawyer.apis.AllBidApi;
 import com.trafficticketbuddy.lawyer.apis.ApiFetchAllCases;
 import com.trafficticketbuddy.lawyer.apis.ApiGetAllCases;
 import com.trafficticketbuddy.lawyer.fragement.MadeBidFragment;
 import com.trafficticketbuddy.lawyer.fragement.AcceptedCaseFragment;
+import com.trafficticketbuddy.lawyer.interfaces.ItemClickListner;
 import com.trafficticketbuddy.lawyer.interfaces.MadeBidCaseDataLoaded;
 import com.trafficticketbuddy.lawyer.interfaces.AcceptedCaseDataLoaded;
 import com.trafficticketbuddy.lawyer.model.allbid.AllBidMain;
@@ -35,7 +40,7 @@ com.appsbee.sad.ui.dashboard
 10/11/16
 sad
 */
-public class MyCaseActivity extends BaseActivity {
+public class MyCaseActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -48,7 +53,11 @@ public class MyCaseActivity extends BaseActivity {
     private AcceptedCaseDataLoaded opencaselistener;
     private ImageView back;
     public  static final List<Response> caseListData=new ArrayList<>();
-
+    private RecyclerView rvRecycler;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayoutManager mLayoutManager;
+    private TextView txtNoItem;
+    private AcceptedCasesRecyclerAdapter mAcceptedCasesRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +66,15 @@ public class MyCaseActivity extends BaseActivity {
         Gson gson = new Gson();
         String json = preference.getString("login_user", "");
         mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
-        viewPager = (ViewPager) findViewById(R.id.id_viewpager);
-
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        //viewPager = (ViewPager) findViewById(R.id.id_viewpager);
+        rvRecycler = (RecyclerView) findViewById(R.id.rvRecycler);
+        txtNoItem = (TextView) findViewById(R.id.txtNoItem);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setEnabled(true);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvRecycler.setLayoutManager(mLayoutManager);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,34 +83,37 @@ public class MyCaseActivity extends BaseActivity {
             }
         });
 
-        mMyCaseAdapter = new MyCaseAdapter(getSupportFragmentManager());
-        AcceptedCaseFragment mOpenCaseFragment= new AcceptedCaseFragment();
-        mMyCaseAdapter.addFragment(mOpenCaseFragment, "Accepted");
-        MadeBidFragment mAllCaseFragment = new MadeBidFragment();
-        mMyCaseAdapter.addFragment(mAllCaseFragment, "Made Bid");
-        viewPager.setAdapter(mMyCaseAdapter);
-        tabLayout = (TabLayout) findViewById(R.id.id_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setCurrentItem(0);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//        mMyCaseAdapter = new MyCaseAdapter(getSupportFragmentManager());
+//        AcceptedCaseFragment mOpenCaseFragment= new AcceptedCaseFragment();
+//        mMyCaseAdapter.addFragment(mOpenCaseFragment, "Accepted");
+//        MadeBidFragment mAllCaseFragment = new MadeBidFragment();
+//        mMyCaseAdapter.addFragment(mAllCaseFragment, "Made Bid");
+//        viewPager.setAdapter(mMyCaseAdapter);
+//        tabLayout = (TabLayout) findViewById(R.id.id_tabs);
+//        tabLayout.setupWithViewPager(viewPager);
+//        viewPager.setCurrentItem(0);
+//        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        fetchAllBids();
+        setAdapterRecyclerView();
+        onRefresh();
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
+
 
 
 
@@ -111,37 +129,75 @@ public class MyCaseActivity extends BaseActivity {
 
     void fetchAllBids(){
         if (isNetworkConnected()){
-            showProgressDialog();
+            //showProgressDialog();
             new AllBidApi(getParams(), new OnApiResponseListener() {
                 @Override
                 public <E> void onSuccess(E t) {
                     caseListData.clear();
-                    dismissProgressDialog();
+                    //dismissProgressDialog();
+                    swipeRefreshLayout.setRefreshing(false);
                     AllBidMain main=(AllBidMain)t;
                     if (main.getStatus()){
-                        caseListData.addAll(main.getResponse());
-                        allcaselistener.madeBidCaseDataLoaded(caseListData);
-                        opencaselistener.acceptedCaseDataLoaded(caseListData);
+                        for (Response mResponse:main.getResponse()) {
+                            if(mResponse.getCaseStatus().equalsIgnoreCase("ACCEPTED")){
+                                caseListData.add(mResponse);
+                            }
+                        }
+                        if(caseListData.size()<=0) {
+                            rvRecycler.setVisibility(View.GONE);
+                            txtNoItem.setVisibility(View.VISIBLE);
+                        }else{
+                            rvRecycler.setVisibility(View.VISIBLE);
+                            txtNoItem.setVisibility(View.GONE);
+                        }
+                        mAcceptedCasesRecyclerAdapter.notifyDataSetChanged();
+                        //caseListData.addAll(main.getResponse());
+                        //allcaselistener.madeBidCaseDataLoaded(caseListData);
+                        //opencaselistener.acceptedCaseDataLoaded(caseListData);
+                    }else{
+                        rvRecycler.setVisibility(View.GONE);
+                        txtNoItem.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public <E> void onError(E t) {
-                    dismissProgressDialog();
-                    caseListData.clear();
-                    allcaselistener.madeBidCaseDataLoaded(caseListData);
-                    opencaselistener.acceptedCaseDataLoaded(caseListData);
+                    swipeRefreshLayout.setRefreshing(false);
+                    rvRecycler.setVisibility(View.GONE);
+                    txtNoItem.setVisibility(View.VISIBLE);
+                    //dismissProgressDialog();
+                    //caseListData.clear();
+                    //allcaselistener.madeBidCaseDataLoaded(caseListData);
+                    //opencaselistener.acceptedCaseDataLoaded(caseListData);
                 }
 
                 @Override
                 public void onError() {
-                    dismissProgressDialog();
-                    caseListData.clear();
-                    allcaselistener.madeBidCaseDataLoaded(caseListData);
-                    opencaselistener.acceptedCaseDataLoaded(caseListData);
+                    swipeRefreshLayout.setRefreshing(false);
+                    rvRecycler.setVisibility(View.GONE);
+                    txtNoItem.setVisibility(View.VISIBLE);
+                    //dismissProgressDialog();
+                    //caseListData.clear();
+                    //allcaselistener.madeBidCaseDataLoaded(caseListData);
+                    //opencaselistener.acceptedCaseDataLoaded(caseListData);
                 }
             });
         }
+    }
+
+
+    private void setAdapterRecyclerView() {
+         mAcceptedCasesRecyclerAdapter =new AcceptedCasesRecyclerAdapter(this, caseListData, new ItemClickListner() {
+            @Override
+            public void onItemClick(Object viewID, int position) {
+                switch (position){
+                    case R.id.linOpenCase:
+
+                        break;
+                }
+            }
+        });
+        rvRecycler.setAdapter(mAcceptedCasesRecyclerAdapter);
     }
 
     private Map<String, String> getParams() {
@@ -156,5 +212,11 @@ public class MyCaseActivity extends BaseActivity {
         switch (view.getId()){
 
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        fetchAllBids();
     }
 }

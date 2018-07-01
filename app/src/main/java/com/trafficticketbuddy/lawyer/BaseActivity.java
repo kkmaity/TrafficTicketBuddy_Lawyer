@@ -10,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -461,8 +462,6 @@ public void showDialog(String msg){
                 .thumbnail(0.5f)
                 .into(mImageView);
     }
-
-
 
 
 
