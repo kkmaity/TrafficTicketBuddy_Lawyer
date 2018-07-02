@@ -3,8 +3,10 @@ package com.trafficticketbuddy.lawyer;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -66,6 +69,9 @@ public class MainActivity extends BaseActivity {
 
     public static List<com.trafficticketbuddy.lawyer.model.homeBanner.Response> bannerList=new ArrayList<>();
     private DrawerLayout drawer;
+    private LinearLayout linHome;
+    private LinearLayout linShare;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,8 @@ public class MainActivity extends BaseActivity {
         linLogout=(LinearLayout)findViewById(R.id.linLogout);
         linMyCase_drawer=(LinearLayout)findViewById(R.id.linMyCase_drawer);
         linLogout=(LinearLayout)findViewById(R.id.linLogout);
+        linHome=(LinearLayout)findViewById(R.id.linHome);
+        linShare=(LinearLayout)findViewById(R.id.linShare);
         tvName=(TextView)findViewById(R.id.tvName);
         txtNoItem=(TextView)findViewById(R.id.txtNoItem);
         tvEmail=(TextView)findViewById(R.id.tvEmail);
@@ -101,6 +109,8 @@ public class MainActivity extends BaseActivity {
         //linMyCase.setOnClickListener(this);
         linLogout.setOnClickListener(this);
         linMyCase_drawer.setOnClickListener(this);
+        linHome.setOnClickListener(this);
+        linShare.setOnClickListener(this);
         linLogout.setOnClickListener(this);
         String deviceToken=    preference.getDeviceToken();
         System.out.println("!!!!!!!!!!!"+deviceToken);
@@ -159,6 +169,11 @@ public class MainActivity extends BaseActivity {
                     if (drawer.isDrawerOpen(GravityCompat.START)) {
                         drawer.closeDrawer(GravityCompat.START);
                     }
+                    ShareCompat.IntentBuilder.from(this)
+                            .setType("text/plain")
+                            .setChooserTitle("Chooser title")
+                            .setText("http://play.google.com/store/apps/details?id=" + this.getPackageName())
+                            .startChooser();
                 break;
 //                case R.id.linFileCase:
 //                startActivity(new Intent(MainActivity.this,FileCaseActivity.class));
@@ -193,7 +208,18 @@ public class MainActivity extends BaseActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
     }
 
@@ -444,4 +470,5 @@ public class MainActivity extends BaseActivity {
         });
         dialog.show();
     }
+
 }

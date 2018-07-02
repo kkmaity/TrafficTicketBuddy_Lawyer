@@ -57,6 +57,9 @@ public class MyProfileActivity extends BaseActivity implements AppBarLayout.OnOf
         ivdegree_1 = (ImageView)findViewById(R.id.ivdegree_1);
         ivdegree_2 = (ImageView)findViewById(R.id.ivdegree_2);
         ivdegree_3 = (ImageView)findViewById(R.id.ivdegree_3);
+        ivdegree_1.setOnClickListener(this);
+        ivdegree_2.setOnClickListener(this);
+        ivdegree_3.setOnClickListener(this);
 
         Gson gson = new Gson();
         String json = preference.getString("login_user", "");
@@ -150,6 +153,24 @@ public class MyProfileActivity extends BaseActivity implements AppBarLayout.OnOf
            case R.id.fab:
                startActivity(new Intent(MyProfileActivity.this,EditProfileActivity.class));
                break;
+            case R.id.ivdegree_1:
+                if(mLogin.getDegreeImages()!=null && mLogin.getDegreeImages().size()>0) {
+                    String path = "uploadImage/degree/"+mLogin.getDegreeImages().get(0).getImage();
+                    FullImageActivity.start(MyProfileActivity.this, path, ivdegree_1);
+                }
+                break;
+            case R.id.ivdegree_2:
+                if(mLogin.getDegreeImages()!=null && mLogin.getDegreeImages().size()>1) {
+                    String path = "uploadImage/degree/"+mLogin.getDegreeImages().get(1).getImage();
+                    FullImageActivity.start(MyProfileActivity.this, path, ivdegree_2);
+                }
+                break;
+            case R.id.ivdegree_3:
+                if(mLogin.getDegreeImages()!=null && mLogin.getDegreeImages().size()>2) {
+                    String path = "uploadImage/degree/"+mLogin.getDegreeImages().get(2).getImage();
+                    FullImageActivity.start(MyProfileActivity.this, path, ivdegree_3);
+                }
+                break;
         }
     }
 }
