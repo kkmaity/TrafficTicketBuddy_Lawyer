@@ -52,7 +52,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                 }else if (!isValidEmail(etEmail.getText().toString())){
                     showDialog("Please enter a valid email.");
                 }else{
-                    //callApi();
+                    callApi();
                 }
 
                 break;
@@ -70,8 +70,10 @@ public class ForgetPasswordActivity extends BaseActivity {
                     try {
                         JSONObject object=new JSONObject(res);
                         if (object.getBoolean("status")){
-                            showDialog(object.getString("message"));
+                            showDialog("A email with reset link has been sent to your email id.");
                             finish();
+                        }else{
+                            showDialog("Email is not registered. Please check your email");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
