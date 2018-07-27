@@ -1,15 +1,23 @@
 package com.trafficticketbuddy.lawyer;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.trafficticketbuddy.lawyer.model.login.Response;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class SplashActivity extends BaseActivity{
     private String deviceToken;
@@ -26,9 +34,9 @@ public class SplashActivity extends BaseActivity{
 
 
 
-      /*  PackageInfo info;
+        PackageInfo info;
         try {
-            info = getPackageManager().getPackageInfo("com.trafficticketbuddy.client", PackageManager.GET_SIGNATURES);
+            info = getPackageManager().getPackageInfo("com.trafficticketbuddy.lawyer", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md;
                 md = MessageDigest.getInstance("SHA");
@@ -43,7 +51,7 @@ public class SplashActivity extends BaseActivity{
             Log.e("no such an algorithm", e.toString());
         } catch (Exception e) {
             Log.e("exception", e.toString());
-        }*/
+        }
 
 
         callNewScreen();
