@@ -66,6 +66,8 @@ public class RegistrationActivity extends BaseActivity {
     private EditText etDegree;
     private LoginMain mLoginMain;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +102,8 @@ public class RegistrationActivity extends BaseActivity {
         etState.setOnClickListener(this);
         carSignUp.setOnClickListener(this);
         tvCountry.setOnClickListener(this);
+        tvLogin.setOnClickListener(this);
+        tvTramsCondition.setOnClickListener(this);
     }
 
     @Override
@@ -131,6 +135,15 @@ public class RegistrationActivity extends BaseActivity {
                 else
                     showDialog("Please select state first");
 
+                break;
+            case R.id.tvLogin:
+                startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
+                finish();
+                break;
+            case R.id.tvTramsCondition:
+                Intent intent2=new Intent(RegistrationActivity.this,ContactUsActivity.class);
+                intent2.putExtra("key","Trams and Condition");
+                startActivity(intent2);
                 break;
 
         }

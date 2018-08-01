@@ -16,8 +16,8 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/icon_email_blue"/>
         <EditText
             android:id="@+id/tv_email"
@@ -45,8 +45,8 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/icon_phone"/>
         <EditText
             android:id="@+id/tv_phone"
@@ -74,8 +74,8 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/graduation"/>
         <EditText
             android:id="@+id/tv_degree"
@@ -107,8 +107,8 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/icon_country"/>
         <EditText
             android:id="@+id/tv_country"
@@ -135,8 +135,8 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/icon_state"/>
         <EditText
             android:id="@+id/tv_state"
@@ -164,8 +164,8 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/icon_city"/>
         <EditText
             android:id="@+id/tv_city"
@@ -198,8 +198,8 @@
             android:layout_weight="1"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/certificate"/>
             <EditText

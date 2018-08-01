@@ -124,6 +124,13 @@ public class MyProfileActivity extends BaseActivity implements AppBarLayout.OnOf
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
     private void initUi() {
         appBarLayout.addOnOffsetChangedListener(this);
         fab.setOnClickListener(this);

@@ -91,7 +91,7 @@ public class SplashActivity extends BaseActivity{
                 }
 
             }
-        }, 5000);
+        }, 3000);
     }
 
     @Override
