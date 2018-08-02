@@ -62,8 +62,8 @@ public class LoginActivity extends BaseActivity {
         cvGoogleLogin.setOnClickListener(this);
         cvFbLogin.setOnClickListener(this);
         cardLogin.setOnClickListener(this);
-    String deviceToken=    preference.getDeviceToken();
-    System.out.println("!!!!!!!!!!!"+deviceToken);
+        String deviceToken=    preference.getDeviceToken();
+           System.out.println("!!!!!!!!!!!"+deviceToken);
 
         findViewById(R.id.txtRegister).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +72,17 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+
+        preference.setDeviceToken(refreshedToken);
+        String deviceToken=    preference.getDeviceToken();
+        System.out.println("!!!!!!!!!!! Start"+deviceToken);
 
     }
 

@@ -2,6 +2,7 @@ package com.trafficticketbuddy.lawyer;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import com.trafficticketbuddy.lawyer.adapter.MadeBidRecyclerAdapter;
@@ -45,6 +47,7 @@ import com.trafficticketbuddy.lawyer.model.login.Response;
 import com.trafficticketbuddy.lawyer.restservice.OnApiResponseListener;
 import com.trafficticketbuddy.lawyer.utils.Constant;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -401,14 +404,16 @@ public class MainActivity extends BaseActivity {
         dialog.findViewById(R.id.tvConfirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                preference.clearData();
+                dialog.dismiss();
+               /* preference.clearData();
                 dialog.dismiss();
                 Intent in=new Intent(MainActivity.this,LoginActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                startActivity(in);
+                startActivity(in);*/
+                deleteToken();
             }
         });
         dialog.show();
@@ -469,6 +474,38 @@ public class MainActivity extends BaseActivity {
             }
         });
         dialog.show();
+    }
+
+    public void deleteToken(){
+        new AsyncTask<Void,Void,Void>()
+        {
+            @Override
+            protected Void doInBackground(Void... params)
+            {
+                {
+                    try
+                    {
+                        FirebaseInstanceId.getInstance().deleteInstanceId();
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void result)
+            {
+                preference.clearData();
+
+                Intent in=new Intent(MainActivity.this,SplashActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(in);
+            }
+        }.execute();
     }
 
 }
