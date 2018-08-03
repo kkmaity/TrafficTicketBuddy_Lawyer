@@ -314,6 +314,7 @@ public class LoginActivity extends BaseActivity {
 
 
     void ProfileActiveDialog(String message){
+        message = "Your email is not verified. Please verify your email.";
         final Dialog dialog=new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.account_active_dialog);
@@ -342,7 +343,8 @@ public class LoginActivity extends BaseActivity {
                     try {
                         JSONObject object=new JSONObject(res);
                         if (object.getBoolean("status")){
-                            showDialog(object.getString("message"));
+                           // showDialog(object.getString("message"));
+                            showDialog("Email sent");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

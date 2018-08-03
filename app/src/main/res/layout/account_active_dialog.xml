@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_16sdp"
-        android:text="Your profile waiting for Admin approval"
+        android:text="Failure"
         android:fontFamily="@font/lato_regular"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
