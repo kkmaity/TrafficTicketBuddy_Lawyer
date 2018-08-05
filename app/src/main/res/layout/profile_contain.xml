@@ -30,7 +30,7 @@
             android:layout_marginLeft="@dimen/_12sdp"
             android:textColor="@color/txt_grey"
             android:enabled="false"
-            android:text="john.doe@hotmail.com"
+            android:text=""
             android:background="@android:color/transparent"
             />
     </LinearLayout>
@@ -59,7 +59,7 @@
             android:layout_marginLeft="@dimen/_12sdp"
             android:textColor="@color/txt_grey"
             android:enabled="false"
-            android:text="+1-6576-47754"
+            android:text=""
             android:background="@android:color/transparent"
             />
     </LinearLayout>
@@ -88,7 +88,7 @@
             android:layout_marginLeft="@dimen/_12sdp"
             android:textColor="@color/txt_grey"
             android:enabled="false"
-            android:text="LLB"
+            android:text=""
             android:background="@android:color/transparent"
             />
     </LinearLayout>
@@ -121,7 +121,7 @@
             android:layout_marginLeft="@dimen/_12sdp"
             android:textColor="@color/txt_grey"
             android:enabled="false"
-            android:text="Canada"
+            android:text=""
             android:background="@android:color/transparent"
             />
     </LinearLayout>
@@ -149,7 +149,7 @@
             android:layout_marginLeft="@dimen/_12sdp"
             android:textColor="@color/txt_grey"
             android:enabled="false"
-            android:text="Ontario"
+            android:text=""
             android:background="@android:color/transparent"
             />
     </LinearLayout>
@@ -178,7 +178,7 @@
             android:layout_marginLeft="@dimen/_12sdp"
             android:textColor="@color/txt_grey"
             android:enabled="false"
-            android:text="Toronto"
+            android:text=""
             android:background="@android:color/transparent"
             />
     </LinearLayout>

@@ -53,18 +53,26 @@ public class SettingsActivity extends BaseActivity {
                 startActivity(new Intent(SettingsActivity.this,ChangePAsswordActivity.class));
                 break;
                 case R.id.linTramsCondition:
-                    Intent intent2=new Intent(SettingsActivity.this,ContactUsActivity.class);
-                    intent2.putExtra("key","Trams and Condition");
-                    startActivity(intent2);                break;
+                    if (isNetworkConnected()) {
+                        Intent intent2 = new Intent(SettingsActivity.this, ContactUsActivity.class);
+                        intent2.putExtra("key", "Trams and Condition");
+                        startActivity(intent2);
+                    }
+                    break;
                 case R.id.linPrivacyPolicy:
-                    Intent intent3=new Intent(SettingsActivity.this,ContactUsActivity.class);
-                    intent3.putExtra("key","Privacy Policy");
-                    startActivity(intent3);
+                    if (isNetworkConnected()) {
+                        Intent intent3 = new Intent(SettingsActivity.this, ContactUsActivity.class);
+                        intent3.putExtra("key", "Privacy Policy");
+                        startActivity(intent3);
+                    }
                     break;
                 case R.id.linCntactUs:
-                    Intent intent4=new Intent(SettingsActivity.this,ContactUsActivity.class);
-                    intent4.putExtra("key","Contact Us");
-                    startActivity(intent4);
+                    if (isNetworkConnected()) {
+                        Intent intent4 = new Intent(SettingsActivity.this, ContactUsActivity.class);
+                        intent4.putExtra("key", "Contact Us");
+                        startActivity(intent4);
+                    }
+
                 break;
         }
     }

@@ -1,5 +1,6 @@
 package com.trafficticketbuddy.lawyer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -66,6 +67,14 @@ public class MyCaseActivity extends BaseActivity implements SwipeRefreshLayout.O
         Gson gson = new Gson();
         String json = preference.getString("login_user", "");
         mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
+//        if(mLogin==null){
+//            Intent in=new Intent(this,SplashActivity.class);
+//            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(in);
+//            finish();
+//        }
         //viewPager = (ViewPager) findViewById(R.id.id_viewpager);
         rvRecycler = (RecyclerView) findViewById(R.id.rvRecycler);
         txtNoItem = (TextView) findViewById(R.id.txtNoItem);

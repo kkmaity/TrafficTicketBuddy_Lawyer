@@ -204,10 +204,10 @@ public class CaseDetailsActivity extends BaseActivity {
         Intent mIntent;
         switch (view.getId()){
             case R.id.ivLicense:
-                FullImageActivity.start(CaseDetailsActivity.this, mCaseResponse.getDrivingLicense(), ivLicense);
+                FullImageZoomActivity.start(CaseDetailsActivity.this, mCaseResponse.getDrivingLicense(), ivLicense);
                 break;
             case R.id.ivBackImage:
-                FullImageActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseRearImg(), ivBackImage);
+                FullImageZoomActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseRearImg(), ivBackImage);
                 break;
             case R.id.ivFontImage:
                 FullImageActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseFrontImg(), ivFontImage);
