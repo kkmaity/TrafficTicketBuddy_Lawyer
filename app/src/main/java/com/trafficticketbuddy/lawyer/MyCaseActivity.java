@@ -1,5 +1,6 @@
 package com.trafficticketbuddy.lawyer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -138,11 +139,12 @@ public class MyCaseActivity extends BaseActivity implements SwipeRefreshLayout.O
                     swipeRefreshLayout.setRefreshing(false);
                     AllBidMain main=(AllBidMain)t;
                     if (main.getStatus()){
-                        for (Response mResponse:main.getResponse()) {
-                            if(mResponse.getCaseStatus().equalsIgnoreCase("ACCEPTED")){
-                                caseListData.add(mResponse);
-                            }
-                        }
+//                        for (Response mResponse:main.getResponse()) {
+//                            if(mResponse.getCaseStatus().equalsIgnoreCase("ACCEPTED")){
+//                                caseListData.add(mResponse);
+//                            }
+//                        }
+                        caseListData.addAll(main.getResponse());
                         if(caseListData.size()<=0) {
                             rvRecycler.setVisibility(View.GONE);
                             txtNoItem.setVisibility(View.VISIBLE);
@@ -192,7 +194,9 @@ public class MyCaseActivity extends BaseActivity implements SwipeRefreshLayout.O
             public void onItemClick(Object viewID, int position) {
                 switch (position){
                     case R.id.linOpenCase:
-
+                        Intent mIntent = new Intent(MyCaseActivity.this,BidDetailsActivity.class);
+                        mIntent.putExtra("data",caseListData.get(Integer.parseInt(String.valueOf(viewID))));
+                        startActivity(mIntent);
                         break;
                 }
             }

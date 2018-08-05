@@ -4,7 +4,9 @@ package com.trafficticketbuddy.lawyer.model.allbid;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Response {
+import java.io.Serializable;
+
+public class Response implements Serializable{
 
     @SerializedName("id")
     @Expose
