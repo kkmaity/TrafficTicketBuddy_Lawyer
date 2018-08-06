@@ -210,7 +210,7 @@ public class CaseDetailsActivity extends BaseActivity {
                 FullImageZoomActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseRearImg(), ivBackImage);
                 break;
             case R.id.ivFontImage:
-                FullImageActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseFrontImg(), ivFontImage);
+                FullImageZoomActivity.start(CaseDetailsActivity.this, mCaseResponse.getCaseFrontImg(), ivFontImage);
                 break;
         }
     }
