@@ -67,14 +67,7 @@ public class MyCaseActivity extends BaseActivity implements SwipeRefreshLayout.O
         Gson gson = new Gson();
         String json = preference.getString("login_user", "");
         mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
-//        if(mLogin==null){
-//            Intent in=new Intent(this,SplashActivity.class);
-//            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(in);
-//            finish();
-//        }
+
         //viewPager = (ViewPager) findViewById(R.id.id_viewpager);
         rvRecycler = (RecyclerView) findViewById(R.id.rvRecycler);
         txtNoItem = (TextView) findViewById(R.id.txtNoItem);
@@ -201,7 +194,9 @@ public class MyCaseActivity extends BaseActivity implements SwipeRefreshLayout.O
             public void onItemClick(Object viewID, int position) {
                 switch (position){
                     case R.id.linOpenCase:
-
+                        Intent mIntent = new Intent(MyCaseActivity.this,BidDetailsActivity.class);
+                        mIntent.putExtra("data",caseListData.get(Integer.parseInt(String.valueOf(viewID))));
+                        startActivity(mIntent);
                         break;
                 }
             }

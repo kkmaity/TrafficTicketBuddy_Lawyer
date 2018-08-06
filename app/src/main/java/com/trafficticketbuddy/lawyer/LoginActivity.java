@@ -94,45 +94,49 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(LoginActivity.this,ForgetPasswordActivity.class));
                 break;
             case R.id.cvGoogleLogin:
-                signIn(new GoogleLoginCompleted() {
-                    @Override
-                    public void onGoogleCompleted(GoogleSignInAccount account) {
-                        String email = account.getEmail();
-                        String first_name = account.getDisplayName();
-                        String last_name = "";
-                        String id = account.getId();
-                        String pic_url="";
-                        if(account.getPhotoUrl()!=null) {
-                            pic_url = account.getPhotoUrl().toString();
-                        }
-                        if(!email.isEmpty()) {
-                            doGoogleLoginApi(first_name, last_name, email, "", "", pic_url, id, "", "", "");
-                        }else{
-                            showDialog("No email address found");
-                        }
-                    }
-                });
-                break;
-            case R.id.cvFbLogin:
-                fbSignInClick(new FbLoginCompleted(){
-                    @Override
-                    public void onFaceBookCompleted(JSONObject object, GraphResponse response) {
-                        try {
-                            String email = object.getString("email");
-                            String first_name = object.getString("first_name");
-                            String last_name = object.getString("last_name");
-                            String id = object.getString("id");
-                            String pic_url="https://graph.facebook.com/" +id+ "/picture?type=large";
-                            if(!email.isEmpty()) {
-                                doFBLoginApi(first_name, last_name, email, "", "", pic_url, id, "", "", "");
-                            }else {
+                if (isNetworkConnected()) {
+                    signIn(new GoogleLoginCompleted() {
+                        @Override
+                        public void onGoogleCompleted(GoogleSignInAccount account) {
+                            String email = account.getEmail();
+                            String first_name = account.getDisplayName();
+                            String last_name = "";
+                            String id = account.getId();
+                            String pic_url = "";
+                            if (account.getPhotoUrl() != null) {
+                                pic_url = account.getPhotoUrl().toString();
+                            }
+                            if (!email.isEmpty()) {
+                                doGoogleLoginApi(first_name, last_name, email, "", "", pic_url, id, "", "", "");
+                            } else {
                                 showDialog("No email address found");
                             }
-                        }catch (Exception e){
-                            e.printStackTrace();
                         }
-                    }
-                });
+                    });
+                }
+                break;
+            case R.id.cvFbLogin:
+                if (isNetworkConnected()) {
+                    fbSignInClick(new FbLoginCompleted() {
+                        @Override
+                        public void onFaceBookCompleted(JSONObject object, GraphResponse response) {
+                            try {
+                                String email = object.getString("email");
+                                String first_name = object.getString("first_name");
+                                String last_name = object.getString("last_name");
+                                String id = object.getString("id");
+                                String pic_url = "https://graph.facebook.com/" + id + "/picture?type=large";
+                                if (!email.isEmpty()) {
+                                    doFBLoginApi(first_name, last_name, email, "", "", pic_url, id, "", "", "");
+                                } else {
+                                    showDialog("No email address found");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
                 break;
             case R.id.cardSignUp:
                 isValidate();
@@ -141,111 +145,117 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doLoginApi() {
-        showProgressDialog();
-        new ApiLogin(getParam(), new OnApiResponseListener() {
-            @Override
-            public <E> void onSuccess(E t) {
+        if (isNetworkConnected()) {
+            showProgressDialog();
+            new ApiLogin(getParam(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
                     dismissProgressDialog();
-                     mLoginMain = (LoginMain) t;
-                    if(mLoginMain.getStatus()){
+                    mLoginMain = (LoginMain) t;
+                    if (mLoginMain.getStatus()) {
                         preference.setUserId(mLoginMain.getResponse().getId());
                         preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                       if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
+                        if (mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")) {
                             ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
-                        }else{
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                         }
-                    }else{
+                    } else {
                         showDialog(mLoginMain.getMessage());
                     }
 
-            }
+                }
 
-            @Override
-            public <E> void onError(E t) {
-                dismissProgressDialog();
-            }
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
 
-            @Override
-            public void onError() {
-                dismissProgressDialog();
-            }
-        });
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
     }
 
     private void doFBLoginApi(String first_name,String last_name,String email,String phone,
                               String gender,String image,String facebook_id,String state,
                               String country,String city) {
-        showProgressDialog();
-        new ApiFaceBookLogin(getFBParam(first_name,last_name,email,phone,
-                gender,image,facebook_id,state,country,city), new OnApiResponseListener() {
-            @Override
-            public <E> void onSuccess(E t) {
-                dismissProgressDialog();
-                mLoginMain = (LoginMain) t;
-                if(mLoginMain.getStatus()){
-                    preference.setUserId(mLoginMain.getResponse().getId());
-                    preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                    if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                        ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
-                    }else{
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        finish();
+        if (isNetworkConnected()) {
+            showProgressDialog();
+            new ApiFaceBookLogin(getFBParam(first_name, last_name, email, phone,
+                    gender, image, facebook_id, state, country, city), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    dismissProgressDialog();
+                    mLoginMain = (LoginMain) t;
+                    if (mLoginMain.getStatus()) {
+                        preference.setUserId(mLoginMain.getResponse().getId());
+                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                        if (mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")) {
+                            ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        }
+                    } else {
+                        showDialog(mLoginMain.getMessage());
                     }
-                }else{
-                    showDialog(mLoginMain.getMessage());
                 }
-            }
 
-            @Override
-            public <E> void onError(E t) {
-                dismissProgressDialog();
-            }
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
 
-            @Override
-            public void onError() {
-                dismissProgressDialog();
-            }
-        });
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
     }
 
 
     private void doGoogleLoginApi(String first_name,String last_name,String email,String phone,
                                   String gender,String image,String google_id,String state,
                                   String country,String city) {
-        showProgressDialog();
-        new ApiGoogleLogin(getGoogleParam(first_name,last_name,email,phone,
-                gender,image,google_id,state,country,city), new OnApiResponseListener() {
-            @Override
-            public <E> void onSuccess(E t) {
-                dismissProgressDialog();
-                mLoginMain = (LoginMain) t;
-                if(mLoginMain.getStatus()){
-                    preference.setUserId(mLoginMain.getResponse().getId());
-                    preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                    if(mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")){
-                        ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
-                    }else{
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        finish();
+        if (isNetworkConnected()) {
+            showProgressDialog();
+            new ApiGoogleLogin(getGoogleParam(first_name, last_name, email, phone,
+                    gender, image, google_id, state, country, city), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    dismissProgressDialog();
+                    mLoginMain = (LoginMain) t;
+                    if (mLoginMain.getStatus()) {
+                        preference.setUserId(mLoginMain.getResponse().getId());
+                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                        if (mLoginMain.getResponse().getIsEmailVerified().equalsIgnoreCase("0")) {
+                            ProfileActiveDialog(mLoginMain.getResponse().getAdminMessage());
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        }
+                    } else {
+                        showDialog(mLoginMain.getMessage());
                     }
-                }else{
-                    showDialog(mLoginMain.getMessage());
+
                 }
 
-            }
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
 
-            @Override
-            public <E> void onError(E t) {
-                dismissProgressDialog();
-            }
-
-            @Override
-            public void onError() {
-                dismissProgressDialog();
-            }
-        });
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
     }
 
     private void isValidate(){

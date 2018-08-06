@@ -370,39 +370,41 @@ public class EditProfileActivity extends BaseActivity {
     }
 
     private void doEditProfileApi() {
-        showProgressDialog();
-        new ApiEditProfile(getParamEditProfile(),getImageParamEditProfile(), new OnApiResponseListener() {
-            @Override
-            public <E> void onSuccess(E t) {
-                {
-                    dismissProgressDialog();
-                    LoginMain mLoginMain = (LoginMain) t;
-                    if(mLoginMain.getStatus()){
-                        preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
-                        mLogin=mLoginMain.getResponse();
-                        if(mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
-                                || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()){
+        if (isNetworkConnected()) {
+            showProgressDialog();
+            new ApiEditProfile(getParamEditProfile(), getImageParamEditProfile(), new OnApiResponseListener() {
+                @Override
+                public <E> void onSuccess(E t) {
+                    {
+                        dismissProgressDialog();
+                        LoginMain mLoginMain = (LoginMain) t;
+                        if (mLoginMain.getStatus()) {
+                            preference.setLoggedInUser(new Gson().toJson(mLoginMain.getResponse()));
+                            mLogin = mLoginMain.getResponse();
+                            if (mLoginMain.getResponse().getPhone().isEmpty() || mLoginMain.getResponse().getCountry().isEmpty()
+                                    || mLoginMain.getResponse().getState().isEmpty() || mLoginMain.getResponse().getCity().isEmpty()) {
 
-                        }else{
-                            finish();
+                            } else {
+                                finish();
+                            }
+                        } else {
+                            showDialog(mLoginMain.getMessage());
                         }
-                    }else{
-                        showDialog(mLoginMain.getMessage());
+
                     }
-
                 }
-            }
 
-            @Override
-            public <E> void onError(E t) {
-                dismissProgressDialog();
-            }
+                @Override
+                public <E> void onError(E t) {
+                    dismissProgressDialog();
+                }
 
-            @Override
-            public void onError() {
-                dismissProgressDialog();
-            }
-        });
+                @Override
+                public void onError() {
+                    dismissProgressDialog();
+                }
+            });
+        }
     }
 
     private Map<String, RequestBody> getParamEditProfile(){

@@ -83,14 +83,6 @@ public class MainActivity extends BaseActivity {
         Gson gson = new Gson();
         String json = preference.getString("login_user", "");
         mLogin = gson.fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
-//        if(mLogin==null){
-//            Intent in=new Intent(MainActivity.this,SplashActivity.class);
-//            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(in);
-//            finish();
-//        }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Home");
@@ -485,35 +477,40 @@ public class MainActivity extends BaseActivity {
     }
 
     public void deleteToken(){
-        new AsyncTask<Void,Void,Void>()
-        {
-            @Override
-            protected Void doInBackground(Void... params)
-            {
-                {
-                    try
-                    {
-                        FirebaseInstanceId.getInstance().deleteInstanceId();
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+        if (isNetworkConnected()) {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    showProgressDialog();
                 }
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Void result)
-            {
-                preference.clearData();
 
-                Intent in=new Intent(MainActivity.this,SplashActivity.class);
-                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                @Override
+                protected Void doInBackground(Void... params) {
+                    {
+                        try {
+                            FirebaseInstanceId.getInstance().deleteInstanceId();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return null;
+                }
 
-                startActivity(in);
-            }
-        }.execute();
+                @Override
+                protected void onPostExecute(Void result) {
+                    dismissProgressDialog();
+                    preference.clearData();
+
+                    Intent in = new Intent(MainActivity.this, SplashActivity.class);
+                    in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(in);
+                }
+            }.execute();
+        }
     }
 
 }
