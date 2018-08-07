@@ -458,6 +458,7 @@ public class RegistrationActivity extends BaseActivity {
     }
 
     void ProfileActiveDialog(String message){
+        message = "An email verification link has been sent to your register email address. Please click that link and verify your account";
         final Dialog dialog=new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.account_active_dialog);

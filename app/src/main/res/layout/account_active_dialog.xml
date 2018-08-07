@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_16sdp"
-        android:text="Failure"
+        android:text="Alert Message"
         android:fontFamily="@font/lato_regular"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"

@@ -73,7 +73,7 @@ public class BidDetailsActivity extends BaseActivity {
             tvCaseno.setText("Case details for case no. "+mCaseResponse.getCaseNumber());
             String json = preference.getString("login_user", "");
             mLogin = new Gson().fromJson(json, com.trafficticketbuddy.lawyer.model.login.Response.class);
-            tvBidAmmount.setText(mCaseResponse.getBidAmount());
+            tvBidAmmount.setText("$"+mCaseResponse.getBidAmount());
             tvBidDesc.setText(mCaseResponse.getBidText());
         }
     }
